@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "three": "^0.145.0",
+    "three.js-fbo": "^1.6.0"
+  }
+}
