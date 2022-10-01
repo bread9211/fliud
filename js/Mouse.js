@@ -1,13 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var THREE = require("three");
-var Common_1 = require("./Common");
+// import { Vector2 } from "three";
+import Common_1 from "./Common.js";
+
+var Vector2 = THREE.Vector2
 var Mouse = /** @class */ (function () {
     function Mouse() {
         this.mouseMoved = false;
-        this.coords = new THREE.Vector2();
-        this.coords_old = new THREE.Vector2();
-        this.diff = new THREE.Vector2();
+        this.coords = new Vector2();
+        this.coords_old = new Vector2();
+        this.diff = new Vector2();
         this.timer = null;
         this.count = 0;
     }
@@ -20,7 +22,7 @@ var Mouse = /** @class */ (function () {
         var _this = this;
         if (this.timer)
             clearTimeout(this.timer);
-        this.coords.set((x / Common_1.default.width) * 2 - 1, -(y / Common_1.default.height) * 2 + 1);
+        this.coords.set((x / Common_1.width) * 2 - 1, -(y / Common_1.height) * 2 + 1);
         this.mouseMoved = true;
         this.timer = setTimeout(function () {
             _this.mouseMoved = false;
@@ -49,4 +51,5 @@ var Mouse = /** @class */ (function () {
     };
     return Mouse;
 }());
-exports.default = new Mouse();
+const _default = new Mouse();
+export { _default as default };

@@ -1,7 +1,10 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var THREE = require("three");
+// import { WebGLRenderer, Clock } from "three";
+
+var WebGLRenderer = THREE.WebGLRenderer
+var Clock = THREE.Clock
 
 var Common = /** @class */ (function () {
     function Common() {
@@ -19,7 +22,7 @@ var Common = /** @class */ (function () {
     Common.prototype.init = function () {
         this.pixelRatio = window.devicePixelRatio;
         this.resize();
-        this.renderer = new THREE.WebGLRenderer({
+        this.renderer = new WebGLRenderer({
             antialias: true,
             alpha: true,
         });
@@ -27,7 +30,7 @@ var Common = /** @class */ (function () {
         this.renderer.setSize(this.width, this.height);
         this.renderer.setClearColor(0x000000);
         this.renderer.setPixelRatio(this.pixelRatio);
-        this.clock = new THREE.Clock();
+        this.clock = new Clock();
         this.clock.start();
     };
     Common.prototype.resize = function () {
@@ -44,4 +47,5 @@ var Common = /** @class */ (function () {
     };
     return Common;
 }());
-exports.default = new Common();
+const _default = new Common();
+export { _default as default };
