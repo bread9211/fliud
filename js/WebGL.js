@@ -1,27 +1,27 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var Common_1 = require("./Common");
-var Output_1 = require("./Output");
-var Mouse_1 = require("./Mouse");
+import Common_1 from "./Common.js";
+import Output_1 from "./Output.js";
+import Mouse_1 from "./Mouse.js";
 var WebGL = /** @class */ (function () {
     function WebGL(_a) {
         var $wrapper = _a.$wrapper;
         this.$wrapper = $wrapper;
-        Common_1.default.init();
-        Mouse_1.default.init();
+        Common_1.init();
+        Mouse_1.init();
         // this.init();
-        this.$wrapper.prepend(Common_1.default.renderer.domElement);
-        this.output = new Output_1.default();
+        this.$wrapper.prepend(Common_1.renderer.domElement);
+        this.output = new Output_1();
         this.loop();
         window.addEventListener("resize", this.resize.bind(this));
     }
     WebGL.prototype.resize = function () {
-        Common_1.default.resize();
+        Common_1.resize();
         this.output.resize();
     };
     WebGL.prototype.render = function () {
-        Mouse_1.default.update();
-        Common_1.default.update();
+        Mouse_1.update();
+        Common_1.update();
         this.output.update();
     };
     WebGL.prototype.loop = function () {
@@ -30,4 +30,5 @@ var WebGL = /** @class */ (function () {
     };
     return WebGL;
 }());
-exports.default = WebGL;
+const _default = WebGL;
+export { _default as default };
