@@ -1,9 +1,14 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Common_1 = require("./Common");
-var THREE = require("three");
+import Common_1 from "./Common.js";
+// import { Scene, Camera, RawShaderMaterial, PlaneBufferGeometry, Mesh } from "three";
 
+var Scene = THREE.Scene
+var Camera = THREE.Camera
+var RawShaderMaterial = THREE.RawShaderMaterial
+var PlaneBufferGeometry = THREE.PlaneBufferGeometry
+var Mesh = THREE.Mesh
 var ShaderPass = /** @class */ (function () {
     function ShaderPass(props) {
         var _a;
@@ -11,21 +16,22 @@ var ShaderPass = /** @class */ (function () {
         this.uniforms = (_a = this.props.material) === null || _a === void 0 ? void 0 : _a.uniforms;
     }
     ShaderPass.prototype.init = function () {
-        this.scene = new THREE.Scene();
-        this.camera = new THREE.Camera();
+        this.scene = new Scene();
+        this.camera = new Camera();
         if (this.uniforms) {
-            this.material = new THREE.RawShaderMaterial(this.props.material);
-            this.geometry = new THREE.PlaneBufferGeometry(2.0, 2.0);
-            this.plane = new THREE.Mesh(this.geometry, this.material);
+            this.material = new RawShaderMaterial(this.props.material);
+            this.geometry = new PlaneBufferGeometry(2.0, 2.0);
+            this.plane = new Mesh(this.geometry, this.material);
             this.scene.add(this.plane);
         }
     };
     ShaderPass.prototype.update = function () {
         var _a, _b, _c;
-        (_a = Common_1.default.renderer) === null || _a === void 0 ? void 0 : _a.setRenderTarget(this.props.output);
-        (_b = Common_1.default.renderer) === null || _b === void 0 ? void 0 : _b.render(this.scene, this.camera);
-        (_c = Common_1.default.renderer) === null || _c === void 0 ? void 0 : _c.setRenderTarget(null);
+        (_a = Common_1.renderer) === null || _a === void 0 ? void 0 : _a.setRenderTarget(this.props.output);
+        (_b = Common_1.renderer) === null || _b === void 0 ? void 0 : _b.render(this.scene, this.camera);
+        (_c = Common_1.renderer) === null || _c === void 0 ? void 0 : _c.setRenderTarget(null);
     };
     return ShaderPass;
 }());
-exports.default = ShaderPass;
+const _default = ShaderPass;
+export { _default as default };
