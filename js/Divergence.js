@@ -15,16 +15,18 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var face_vert_raw_1 = require("../shaders/face.vert?raw");
-var divergence_frag_raw_1 = require("./shaders/divergence.frag?raw");
-var ShaderPass_1 = require("./ShaderPass");
+var fs = new FileReader()
+var face_vert_raw_1 = fs.readAsText(new File([], "../shaders/face.vert?raw"));
+fs = new FileReader()
+var divergence_frag_raw_1 = fs.readAsText(new File([], "./shaders/divergence.frag?raw"));
+import ShaderPass_1 from "./ShaderPass.js";
 var Divergence = /** @class */ (function (_super) {
     __extends(Divergence, _super);
     function Divergence(simProps) {
         var _this = _super.call(this, {
             material: {
-                vertexShader: face_vert_raw_1.default,
-                fragmentShader: divergence_frag_raw_1.default,
+                vertexShader: face_vert_raw_1,
+                fragmentShader: divergence_frag_raw_1,
                 uniforms: {
                     boundarySpace: {
                         value: simProps.boundarySpace,
@@ -53,5 +55,6 @@ var Divergence = /** @class */ (function (_super) {
         _super.prototype.update.call(this);
     };
     return Divergence;
-}(ShaderPass_1.default));
-exports.default = Divergence;
+}(ShaderPass_1));
+const _default = Divergence;
+export { _default as default };

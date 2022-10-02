@@ -19,9 +19,15 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 
 // import { BufferGeometry, BufferAttribute, RawShaderMaterial, LineSegments } from "three";
-var face_vert_raw_1 = require("../shaders/face.vert?raw");
-var line_vert_raw_1 = require("../shaders/line.vert?raw");
-var advection_frag_raw_1 = require("../shaders/advection.frag?raw");
+// var face_vert_raw_1 = require("../shaders/face.vert?raw");
+// var line_vert_raw_1 = require("../shaders/line.vert?raw");
+// var advection_frag_raw_1 = require("../shaders/advection.frag?raw");
+var fr = new FileReader();
+var face_vert_raw_1 = fr.readAsText(new File([], "../shaders/face.vert?raw"));
+fr = new FileReader();
+var line_vert_raw_1 = fr.readAsText(new File([], "../shaders/line.vert?raw"));
+fr = new FileReader();
+var advection_frag_raw_1 = fr.readAsText(new File([], "../shaders/advection.frag?raw"));
 import ShaderPass_1 from "./ShaderPass.js";
 
 var BufferGeometry = THREE.BufferGeometry

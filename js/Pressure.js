@@ -15,16 +15,19 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var face_vert_raw_1 = require("../shaders/face.vert?raw");
-var pressure_frag_raw_1 = require("../shaders/pressure.frag?raw");
-var ShaderPass_1 = require("./ShaderPass");
+
+import ShaderPass_1 from "./ShaderPass.js";
+var fs = new FileReader()
+var face_vert_raw_1 = fs.readAsText(new File([], "../shaders/face.vert?raw"));
+fs = new FileReader()
+var pressure_frag_raw_1 = fs.readAsText(new File([], "../shaders/pressure.frag?raw"));
 var Pressure = /** @class */ (function (_super) {
     __extends(Pressure, _super);
     function Pressure(simProps) {
         var _this = _super.call(this, {
             material: {
-                vertexShader: face_vert_raw_1.default,
-                fragmentShader: pressure_frag_raw_1.default,
+                vertexShader: face_vert_raw_1,
+                fragmentShader: pressure_frag_raw_1,
                 uniforms: {
                     boundarySpace: {
                         value: simProps.boundarySpace,
@@ -55,5 +58,6 @@ var Pressure = /** @class */ (function (_super) {
         _super.prototype.update.call(this);
     };
     return Pressure;
-}(ShaderPass_1.default));
-exports.default = Pressure;
+}(ShaderPass_1));
+const _default = Pressure;
+export { _default as default };

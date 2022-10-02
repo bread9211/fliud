@@ -15,11 +15,19 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var THREE = require("three");
-var mouse_vert_raw_1 = require("../shaders/mouse.vert?raw");
-var externalForce_frag_raw_1 = require("../shaders/externalForce.frag?raw");
-var ShaderPass_1 = require("./ShaderPass");
-var Mouse_1 = require("./Mouse");
+// import { PlaneBufferGeometry, RawShaderMaterial, AdditiveBlending, Vector2, Mesh } from "three";
+var fr = new FileReader()
+var mouse_vert_raw_1 = fr.readAsText(new File([], "../shaders/mouse.vert?raw"));
+fr = new FileReader()
+var externalForce_frag_raw_1 = fr.readAsText(new File([], "../shaders/externalForce.frag?raw"));
+import ShaderPass_1 from "./ShaderPass.js";
+import Mouse_1 from "./Mouse.js";
+
+var PlaneBufferGeometry = THREE.PlaneBufferGeometry;
+var RawShaderMaterial = THREE.RawShaderMaterial;
+var AdditiveBlending = THREE.AdditiveBlending;
+var Vector2 = THREE.Vector2;
+var Mesh = THREE.Mesh;
 var ExternalForce = /** @class */ (function (_super) {
     __extends(ExternalForce, _super);
     function ExternalForce(simProps) {
@@ -27,37 +35,37 @@ var ExternalForce = /** @class */ (function (_super) {
             output: simProps.dst,
         }) || this;
         _super.prototype.init.call(_this);
-        var mouseG = new THREE.PlaneBufferGeometry(1, 1);
-        var mouseM = new THREE.RawShaderMaterial({
-            vertexShader: mouse_vert_raw_1.default,
-            fragmentShader: externalForce_frag_raw_1.default,
-            blending: THREE.AdditiveBlending,
+        var mouseG = new PlaneBufferGeometry(1, 1);
+        var mouseM = new RawShaderMaterial({
+            vertexShader: mouse_vert_raw_1,
+            fragmentShader: externalForce_frag_raw_1,
+            blending: AdditiveBlending,
             uniforms: {
                 px: {
                     value: simProps.cellScale,
                 },
                 force: {
-                    value: new THREE.Vector2(0.0, 0.0),
+                    value: new Vector2(0.0, 0.0),
                 },
                 center: {
-                    value: new THREE.Vector2(0.0, 0.0),
+                    value: new Vector2(0.0, 0.0),
                 },
                 scale: {
-                    value: new THREE.Vector2(simProps.cursor_size, simProps.cursor_size),
+                    value: new Vector2(simProps.cursor_size, simProps.cursor_size),
                 },
             },
         });
-        _this.mouse = new THREE.Mesh(mouseG, mouseM);
+        _this.mouse = new Mesh(mouseG, mouseM);
         _this.scene.add(_this.mouse);
         return _this;
     }
     ExternalForce.prototype.updateExternalForce = function (props) {
-        var forceX = (Mouse_1.default.diff.x / 2) * props.mouse_force;
-        var forceY = (Mouse_1.default.diff.y / 2) * props.mouse_force;
+        var forceX = (Mouse_1.diff.x / 2) * props.mouse_force;
+        var forceY = (Mouse_1.diff.y / 2) * props.mouse_force;
         var cursorSizeX = props.cursor_size * props.cellScale.x;
         var cursorSizeY = props.cursor_size * props.cellScale.y;
-        var centerX = Math.min(Math.max(Mouse_1.default.coords.x, -1 + cursorSizeX + props.cellScale.x * 2), 1 - cursorSizeX - props.cellScale.x * 2);
-        var centerY = Math.min(Math.max(Mouse_1.default.coords.y, -1 + cursorSizeY + props.cellScale.y * 2), 1 - cursorSizeY - props.cellScale.y * 2);
+        var centerX = Math.min(Math.max(Mouse_1.coords.x, -1 + cursorSizeX + props.cellScale.x * 2), 1 - cursorSizeX - props.cellScale.x * 2);
+        var centerY = Math.min(Math.max(Mouse_1.coords.y, -1 + cursorSizeY + props.cellScale.y * 2), 1 - cursorSizeY - props.cellScale.y * 2);
         var uniforms = this.mouse.material.uniforms;
         uniforms.force.value.set(forceX, forceY);
         uniforms.center.value.set(centerX, centerY);
@@ -65,5 +73,6 @@ var ExternalForce = /** @class */ (function (_super) {
         _super.prototype.update.call(this);
     };
     return ExternalForce;
-}(ShaderPass_1.default));
-exports.default = ExternalForce;
+}(ShaderPass_1));
+const _default = ExternalForce;
+export { _default as default };

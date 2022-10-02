@@ -1,7 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createFbos = void 0;
-var THREE = require("three");
+
+// import { HalfFloatType, FloatType, WebGLRenderTarget } from "three";
+var HalfFloatType = THREE.HalfFloatType
+var FloatType = THREE.FloatType
+var WebGLRenderTarget = THREE.WebGLRenderTarget
 var createFbos = function (fboSize) {
     var initialFbos = {
         vel_0: null,
@@ -13,14 +16,15 @@ var createFbos = function (fboSize) {
         pressure_1: null,
     };
     var type = /(iPad|iPhone|iPod)/g.test(navigator.userAgent)
-        ? THREE.HalfFloatType
-        : THREE.FloatType;
+        ? HalfFloatType
+        : FloatType;
     Object.keys(initialFbos).forEach(function (key) {
-        initialFbos[key] = new THREE.WebGLRenderTarget(fboSize.x, fboSize.y, {
+        initialFbos[key] = new WebGLRenderTarget(fboSize.x, fboSize.y, {
             type: type,
         });
     });
     var exportedFbos = initialFbos;
     return exportedFbos;
 };
-exports.createFbos = createFbos;
+const _createFbos = createFbos;
+export { _createFbos as createFbos };

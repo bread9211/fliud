@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-import Common_1 from "./Common.js";
+import Common_1 from "./Common.js"
 // import { Scene, Camera, RawShaderMaterial, PlaneBufferGeometry, Mesh } from "three";
 
 var Scene = THREE.Scene

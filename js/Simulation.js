@@ -1,15 +1,17 @@
-"use strict";
+    "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var THREE = require("three");
-var Common_1 = require("./Common");
-var Controls_1 = require("./Controls");
-var Advection_1 = require("./Advection");
-var ExternalForce_1 = require("./ExternalForce");
-var Viscous_1 = require("./Viscous");
-var Divergence_1 = require("./Divergence");
-var Poisson_1 = require("./Poisson");
-var Pressure_1 = require("./Pressure");
-var createFbos_1 = require("../utils/createFbos");
+// import { Vector2 } from "three";
+// import Common_1 from "./Common.js";
+import Controls_1 from "./Controls.js";
+import Advection_1 from "./Advection.js";
+import ExternalForce_1 from "./ExternalForce.js";
+import Viscous_1 from "./Viscious.js";
+import Divergence_1 from "./Divergence.js";
+import Poisson_1 from "./Poisson.js";
+import Pressure_1 from "./Pressure.js";
+import { createFbos } from "../utils/createFbos.js";
+import Common_1 from "./Common.js"
+var Vector2 = THREE.Vector2
 var Simulation = /** @class */ (function () {
     function Simulation() {
         this.options = {
@@ -24,32 +26,32 @@ var Simulation = /** @class */ (function () {
             isViscous: false,
             BFECC: true,
         };
-        new Controls_1.default(this.options);
-        this.fboSize = new THREE.Vector2();
-        this.cellScale = new THREE.Vector2();
-        this.boundarySpace = new THREE.Vector2();
+        new Controls_1(this.options);
+        this.fboSize = new Vector2();
+        this.cellScale = new Vector2();
+        this.boundarySpace = new Vector2();
         // clacSize
-        var width = Math.round(this.options.resolution * Common_1.default.width);
-        var height = Math.round(this.options.resolution * Common_1.default.height);
+        var width = Math.round(this.options.resolution * Common_1.width);
+        var height = Math.round(this.options.resolution * Common_1.height);
         var px_x = 1.0 / width;
         var px_y = 1.0 / height;
         this.cellScale.set(px_x, px_y);
         this.fboSize.set(width, height);
-        this.fbos = (0, createFbos_1.createFbos)(this.fboSize);
+        this.fbos = (0, createFbos)(this.fboSize);
         // createShaderPass()
-        this.advection = new Advection_1.default({
+        this.advection = new Advection_1({
             cellScale: this.cellScale,
             fboSize: this.fboSize,
             dt: this.options.dt,
             src: this.fbos.vel_0,
             dst: this.fbos.vel_1,
         });
-        this.externalForce = new ExternalForce_1.default({
+        this.externalForce = new ExternalForce_1({
             cellScale: this.cellScale,
             cursor_size: this.options.cursor_size,
             dst: this.fbos.vel_1,
         });
-        this.viscous = new Viscous_1.default({
+        this.viscous = new Viscous_1({
             cellScale: this.cellScale,
             boundarySpace: this.boundarySpace,
             viscous: this.options.viscous,
@@ -58,21 +60,21 @@ var Simulation = /** @class */ (function () {
             dst_: this.fbos.vel_viscous0,
             dt: this.options.dt,
         });
-        this.divergence = new Divergence_1.default({
+        this.divergence = new Divergence_1({
             cellScale: this.cellScale,
             boundarySpace: this.boundarySpace,
             src: this.fbos.vel_viscous0,
             dst: this.fbos.div,
             dt: this.options.dt,
         });
-        this.poisson = new Poisson_1.default({
+        this.poisson = new Poisson_1({
             cellScale: this.cellScale,
             boundarySpace: this.boundarySpace,
             src: this.fbos.div,
             dst: this.fbos.pressure_1,
             dst_: this.fbos.pressure_0,
         });
-        this.pressure = new Pressure_1.default({
+        this.pressure = new Pressure_1({
             cellScale: this.cellScale,
             boundarySpace: this.boundarySpace,
             src_p: this.fbos.pressure_0,
@@ -115,4 +117,5 @@ var Simulation = /** @class */ (function () {
     };
     return Simulation;
 }());
-exports.default = Simulation;
+const _default = Simulation;
+export { _default as default };

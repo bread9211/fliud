@@ -3,8 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // import { Scene, Camera, Mesh, PlaneBufferGeometry, RawShaderMaterial, Vector2 } from "three";
 import Common_1 from "./Common.js";
 import Simulation_1 from "./Simulation.js";
-var face_vert_raw_1 = require("../shaders/face.vert?raw");
-var color_frag_raw_1 = require("../shaders/color.frag?raw");
+var fs = new FileReader()
+var face_vert_raw_1 = fs.readAsText(new File([], "../shaders/face.vert?raw"));
+fs = new FileReader()
+var color_frag_raw_1 = fs.readAsText(new File([], "../shaders/color.frag?raw"));
 
 var Scene = THREE.Scene
 var Camera = THREE.Camera

@@ -1,13 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var dat_gui_1 = require("dat.gui");
+// import { GUI } from "dat.gui";
+var GUI = dat.GUI
 var Controls = /** @class */ (function () {
     function Controls(params) {
         this.params = params;
         this.init();
     }
     Controls.prototype.init = function () {
-        this.gui = new dat_gui_1.GUI({ width: 300 });
+        this.gui = new GUI({ width: 300 });
         this.gui.add(this.params, "mouse_force", 20, 200);
         this.gui.add(this.params, "cursor_size", 10, 200);
         this.gui.add(this.params, "isViscous");
@@ -20,4 +21,5 @@ var Controls = /** @class */ (function () {
     };
     return Controls;
 }());
-exports.default = Controls;
+const _default = Controls;
+export { _default as default };
