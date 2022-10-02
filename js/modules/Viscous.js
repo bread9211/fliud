@@ -1,115 +1,226 @@
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Viscous; });
-/* harmony import */ var _glsl_sim_face_vert__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./glsl/sim/face.vert */ "./js/modules/glsl/sim/face.vert");
-/* harmony import */ var _glsl_sim_viscous_frag__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./glsl/sim/viscous.frag */ "./js/modules/glsl/sim/viscous.frag");
-/* harmony import */ var _ShaderPass__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ShaderPass */ "./js/modules/ShaderPass.js");
-/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+/* harmony export (binding) */
+__webpack_require__.d(__webpack_exports__, "default", function() {
+	return Viscous;
+});
+/* harmony import */
+var _glsl_sim_face_vert__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__( /*! ./glsl/sim/face.vert */ "./js/modules/glsl/sim/face.vert");
+/* harmony import */
+var _glsl_sim_viscous_frag__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ./glsl/sim/viscous.frag */ "./js/modules/glsl/sim/viscous.frag");
+/* harmony import */
+var _ShaderPass__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__( /*! ./ShaderPass */ "./js/modules/ShaderPass.js");
+/* harmony import */
+var three__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__( /*! three */ "./node_modules/three/build/three.module.js");
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _typeof(obj) {
+	"@babel/helpers - typeof";
+	if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+		_typeof = function _typeof(obj) {
+			return typeof obj;
+		};
+	} else {
+		_typeof = function _typeof(obj) {
+			return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+		};
+	}
+	return _typeof(obj);
+}
 
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function _classCallCheck(instance, Constructor) {
+	if (!(instance instanceof Constructor)) {
+		throw new TypeError("Cannot call a class as a function");
+	}
+}
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+function _defineProperties(target, props) {
+	for (var i = 0; i < props.length; i++) {
+		var descriptor = props[i];
+		descriptor.enumerable = descriptor.enumerable || false;
+		descriptor.configurable = true;
+		if ("value" in descriptor) descriptor.writable = true;
+		Object.defineProperty(target, descriptor.key, descriptor);
+	}
+}
 
-function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
+function _createClass(Constructor, protoProps, staticProps) {
+	if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+	if (staticProps) _defineProperties(Constructor, staticProps);
+	return Constructor;
+}
 
-function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
+function _get(target, property, receiver) {
+	if (typeof Reflect !== "undefined" && Reflect.get) {
+		_get = Reflect.get;
+	} else {
+		_get = function _get(target, property, receiver) {
+			var base = _superPropBase(target, property);
+			if (!base) return;
+			var desc = Object.getOwnPropertyDescriptor(base, property);
+			if (desc.get) {
+				return desc.get.call(receiver);
+			}
+			return desc.value;
+		};
+	}
+	return _get(target, property, receiver || target);
+}
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _superPropBase(object, property) {
+	while (!Object.prototype.hasOwnProperty.call(object, property)) {
+		object = _getPrototypeOf(object);
+		if (object === null) break;
+	}
+	return object;
+}
 
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _inherits(subClass, superClass) {
+	if (typeof superClass !== "function" && superClass !== null) {
+		throw new TypeError("Super expression must either be null or a function");
+	}
+	subClass.prototype = Object.create(superClass && superClass.prototype, {
+		constructor: {
+			value: subClass,
+			writable: true,
+			configurable: true
+		}
+	});
+	if (superClass) _setPrototypeOf(subClass, superClass);
+}
 
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _setPrototypeOf(o, p) {
+	_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+		o.__proto__ = p;
+		return o;
+	};
+	return _setPrototypeOf(o, p);
+}
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+function _createSuper(Derived) {
+	var hasNativeReflectConstruct = _isNativeReflectConstruct();
+	return function _createSuperInternal() {
+		var Super = _getPrototypeOf(Derived),
+			result;
+		if (hasNativeReflectConstruct) {
+			var NewTarget = _getPrototypeOf(this).constructor;
+			result = Reflect.construct(Super, arguments, NewTarget);
+		} else {
+			result = Super.apply(this, arguments);
+		}
+		return _possibleConstructorReturn(this, result);
+	};
+}
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _possibleConstructorReturn(self, call) {
+	if (call && (_typeof(call) === "object" || typeof call === "function")) {
+		return call;
+	}
+	return _assertThisInitialized(self);
+}
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _assertThisInitialized(self) {
+	if (self === void 0) {
+		throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+	}
+	return self;
+}
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _isNativeReflectConstruct() {
+	if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+	if (Reflect.construct.sham) return false;
+	if (typeof Proxy === "function") return true;
+	try {
+		Date.prototype.toString.call(Reflect.construct(Date, [], function() {}));
+		return true;
+	} catch (e) {
+		return false;
+	}
+}
+
+function _getPrototypeOf(o) {
+	_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+		return o.__proto__ || Object.getPrototypeOf(o);
+	};
+	return _getPrototypeOf(o);
+}
 
 
 
 
+var Viscous = /*#__PURE__*/ function(_ShaderPass) {
+	_inherits(Viscous, _ShaderPass);
 
+	var _super = _createSuper(Viscous);
 
-var Viscous = /*#__PURE__*/function (_ShaderPass) {
-  _inherits(Viscous, _ShaderPass);
+	function Viscous(simProps) {
+		var _this;
 
-  var _super = _createSuper(Viscous);
+		_classCallCheck(this, Viscous);
 
-  function Viscous(simProps) {
-    var _this;
+		_this = _super.call(this, {
+			material: {
+				vertexShader: _glsl_sim_face_vert__WEBPACK_IMPORTED_MODULE_0__["default"],
+				fragmentShader: _glsl_sim_viscous_frag__WEBPACK_IMPORTED_MODULE_1__["default"],
+				uniforms: {
+					boundarySpace: {
+						value: simProps.boundarySpace
+					},
+					velocity: {
+						value: simProps.src.texture
+					},
+					velocity_new: {
+						value: simProps.dst_.texture
+					},
+					v: {
+						value: simProps.viscous
+					},
+					px: {
+						value: simProps.cellScale
+					},
+					dt: {
+						value: simProps.dt
+					}
+				}
+			},
+			output: simProps.dst,
+			output0: simProps.dst_,
+			output1: simProps.dst
+		});
 
-    _classCallCheck(this, Viscous);
+		_this.init();
 
-    _this = _super.call(this, {
-      material: {
-        vertexShader: _glsl_sim_face_vert__WEBPACK_IMPORTED_MODULE_0__["default"],
-        fragmentShader: _glsl_sim_viscous_frag__WEBPACK_IMPORTED_MODULE_1__["default"],
-        uniforms: {
-          boundarySpace: {
-            value: simProps.boundarySpace
-          },
-          velocity: {
-            value: simProps.src.texture
-          },
-          velocity_new: {
-            value: simProps.dst_.texture
-          },
-          v: {
-            value: simProps.viscous
-          },
-          px: {
-            value: simProps.cellScale
-          },
-          dt: {
-            value: simProps.dt
-          }
-        }
-      },
-      output: simProps.dst,
-      output0: simProps.dst_,
-      output1: simProps.dst
-    });
+		return _this;
+	}
 
-    _this.init();
+	_createClass(Viscous, [{
+		key: "update",
+		value: function update(_ref) {
+			var viscous = _ref.viscous,
+				iterations = _ref.iterations,
+				dt = _ref.dt;
+			var fbo_in, fbo_out;
+			this.uniforms.v.value = viscous;
 
-    return _this;
-  }
+			for (var i = 0; i < iterations; i++) {
+				if (i % 2 == 0) {
+					fbo_in = this.props.output0;
+					fbo_out = this.props.output1;
+				} else {
+					fbo_in = this.props.output1;
+					fbo_out = this.props.output0;
+				}
 
-  _createClass(Viscous, [{
-    key: "update",
-    value: function update(_ref) {
-      var viscous = _ref.viscous,
-          iterations = _ref.iterations,
-          dt = _ref.dt;
-      var fbo_in, fbo_out;
-      this.uniforms.v.value = viscous;
+				this.uniforms.velocity_new.value = fbo_in.texture;
+				this.props.output = fbo_out;
+				this.uniforms.dt.value = dt;
 
-      for (var i = 0; i < iterations; i++) {
-        if (i % 2 == 0) {
-          fbo_in = this.props.output0;
-          fbo_out = this.props.output1;
-        } else {
-          fbo_in = this.props.output1;
-          fbo_out = this.props.output0;
-        }
+				_get(_getPrototypeOf(Viscous.prototype), "update", this).call(this);
+			}
 
-        this.uniforms.velocity_new.value = fbo_in.texture;
-        this.props.output = fbo_out;
-        this.uniforms.dt.value = dt;
+			return fbo_out;
+		}
+	}]);
 
-        _get(_getPrototypeOf(Viscous.prototype), "update", this).call(this);
-      }
-
-      return fbo_out;
-    }
-  }]);
-
-  return Viscous;
+	return Viscous;
 }(_ShaderPass__WEBPACK_IMPORTED_MODULE_2__["default"]);
 
 
