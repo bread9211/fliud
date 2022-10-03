@@ -36,71 +36,73 @@ var RawShaderMaterial = THREE.RawShaderMaterial
 var LineSegments = THREE.LineSegments
 var Advection = /** @class */ (function (_super) {
     __extends(Advection, _super);
-    function Advection(simProps) {
-        var _this = _super.call(this, {
-            material: {
-                vertexShader: face_vert_raw_1,
-                fragmentShader: advection_frag_raw_1,
-                uniforms: {
-                    boundarySpace: {
-                        value: simProps.cellScale,
-                    },
-                    px: {
-                        value: simProps.cellScale,
-                    },
-                    fboSize: {
-                        value: simProps.fboSize,
-                    },
-                    velocity: {
-                        value: simProps.src.texture,
-                    },
-                    dt: {
-                        value: simProps.dt,
-                    },
-                    isBFECC: {
-                        value: true,
+    class Advection {
+        constructor(simProps) {
+            var _this = _super.call(this, {
+                material: {
+                    vertexShader: face_vert_raw_1,
+                    fragmentShader: advection_frag_raw_1,
+                    uniforms: {
+                        boundarySpace: {
+                            value: simProps.cellScale,
+                        },
+                        px: {
+                            value: simProps.cellScale,
+                        },
+                        fboSize: {
+                            value: simProps.fboSize,
+                        },
+                        velocity: {
+                            value: simProps.src.texture,
+                        },
+                        dt: {
+                            value: simProps.dt,
+                        },
+                        isBFECC: {
+                            value: true,
+                        },
                     },
                 },
-            },
-            output: simProps.dst,
-        }) || this;
-        _this.init();
-        return _this;
+                output: simProps.dst,
+            }) || this;
+            _this.init();
+            return _this;
+        }
+        init() {
+            _super.prototype.init.call(this);
+            this.createBoundary();
+        }
+        createBoundary() {
+            var _a;
+            var boundaryG = new BufferGeometry();
+            var vertices_boundary = new Float32Array([
+                // left
+                -1, -1, 0, -1, 1, 0,
+                // top
+                -1, 1, 0, 1, 1, 0,
+                // right
+                1, 1, 0, 1, -1, 0,
+                // bottom
+                1, -1, 0, -1, -1, 0,
+            ]);
+            boundaryG.setAttribute("position", new BufferAttribute(vertices_boundary, 3));
+            var boundaryM = new RawShaderMaterial({
+                vertexShader: line_vert_raw_1,
+                fragmentShader: advection_frag_raw_1,
+                uniforms: this.uniforms,
+            });
+            this.line = new LineSegments(boundaryG, boundaryM);
+            (_a = this.scene) === null || _a === void 0 ? void 0 : _a.add(this.line);
+        }
+        updateAdvection(_a) {
+            var dt = _a.dt, isBounce = _a.isBounce, BFECC = _a.BFECC;
+            if (this.uniforms)
+                this.uniforms.dt.value = dt;
+            this.line.visible = isBounce;
+            this.uniforms.isBFECC.value = BFECC;
+            _super.prototype.update.call(this);
+        }
     }
-    Advection.prototype.init = function () {
-        _super.prototype.init.call(this);
-        this.createBoundary();
-    };
-    Advection.prototype.createBoundary = function () {
-        var _a;
-        var boundaryG = new BufferGeometry();
-        var vertices_boundary = new Float32Array([
-            // left
-            -1, -1, 0, -1, 1, 0,
-            // top
-            -1, 1, 0, 1, 1, 0,
-            // right
-            1, 1, 0, 1, -1, 0,
-            // bottom
-            1, -1, 0, -1, -1, 0,
-        ]);
-        boundaryG.setAttribute("position", new BufferAttribute(vertices_boundary, 3));
-        var boundaryM = new RawShaderMaterial({
-            vertexShader: line_vert_raw_1,
-            fragmentShader: advection_frag_raw_1,
-            uniforms: this.uniforms,
-        });
-        this.line = new LineSegments(boundaryG, boundaryM);
-        (_a = this.scene) === null || _a === void 0 ? void 0 : _a.add(this.line);
-    };
-    Advection.prototype.updateAdvection = function (_a) {
-        var dt = _a.dt, isBounce = _a.isBounce, BFECC = _a.BFECC;
-        if (this.uniforms)
-            this.uniforms.dt.value = dt;
-        this.line.visible = isBounce;
-        this.uniforms.isBFECC.value = BFECC;
-        _super.prototype.update.call(this);
-    };
     return Advection;
 }(ShaderPass_1));
 const _default = Advection;

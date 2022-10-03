@@ -1,8 +1,8 @@
 local window = js.global
 
-local Common = require("lua/Common")
-local Output = require("lua/Output")
-local Mouse = require("lua/Mouse")
+local Common = require("lua.Common")
+local Output = require("lua.Output")
+local Mouse = require("lua.Mouse")
 
 local WebGL = {}
 local WebGLMT = {__index = WebGL}

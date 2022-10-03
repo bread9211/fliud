@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var HalfFloatType = THREE.HalfFloatType
 var FloatType = THREE.FloatType
 var WebGLRenderTarget = THREE.WebGLRenderTarget
+
 var createFbos = function (fboSize) {
     var initialFbos = {
         vel_0: null,

@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 import Controls_1 from "./Controls.js";
 import Advection_1 from "./Advection.js";
 import ExternalForce_1 from "./ExternalForce.js";
-import Viscous_1 from "./Viscious.js";
+import Viscous_1 from "./Viscous.js";
 import Divergence_1 from "./Divergence.js";
 import Poisson_1 from "./Poisson.js";
 import Pressure_1 from "./Pressure.js";
@@ -35,7 +35,7 @@ var Simulation = /** @class */ (function () {
         var height = Math.round(this.options.resolution * Common_1.height);
         var px_x = 1.0 / width;
         var px_y = 1.0 / height;
-        this.cellScale.set(px_x, px_y);
+        this.cellScale.set(px_x, px_y); 
         this.fboSize.set(width, height);
         this.fbos = (0, createFbos)(this.fboSize);
         // createShaderPass()

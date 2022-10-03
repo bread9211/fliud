@@ -1,6 +1,6 @@
 local window = js.global
 
-local WebGL = require("lua/WebGL")
+local WebGL = require("lua.WebGL")
 
 WebGL:new(window.document)
 
