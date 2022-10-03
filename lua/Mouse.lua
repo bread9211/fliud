@@ -63,4 +63,5 @@ function Mouse:update()
     end
 end
 
+print("Mouse.lua initialized")
 return Mouse:new()

@@ -49,4 +49,5 @@ function ShaderPass:update()
     end
 end
 
+print("ShaderPass.lua initialized")
 return ShaderPass

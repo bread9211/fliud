@@ -92,3 +92,6 @@ function Advection:updateAdvection(_a)
     self.uniforms.isBFECC.value = BFECC
     self:update()
 end
+
+print("Advection.lua initialized")
+return Advection

@@ -28,4 +28,5 @@ function Controls:init()
     self.gui:close()
 end
 
+print("Controls.lua initialized")
 return Controls
