@@ -97,24 +97,24 @@ end
 
 function Simulation:resize()
     local _self = self;
-    for i, v in ipairs(self.fbos) do
+    for _, v in ipairs(self.fbos) do
         v:setSize(_self.fboSize.x, _self.fboSize.y)
     end
 end
 
 function Simulation:update()
     if (self.options.isBounce) then
-        self.boundarySpace.set(0, 0);
+        self.boundarySpace:set(0, 0);
     else
-        self.boundarySpace.copy(self.cellScale);
+        self.boundarySpace:copy(self.cellScale);
     end
-    self.advection.updateAdvection(self.options);
-    self.externalForce.updateExternalForce({
+    self.advection:updateAdvection(self.options);
+    self.externalForce:updateExternalForce({
         cursor_size = self.options.cursor_size,
         mouse_force = self.options.mouse_force,
         cellScale = self.cellScale,
     });
-    local vel = self.fbos.vel_1 and self.option.isViscous or self.viscous.updateViscous({
+    local vel = self.fbos.vel_1 and self.option.isViscous or self.viscous:updateViscous({
         viscous = self.options.viscous,
         iterations = self.options.iterations_viscous,
         dt = self.options.dt,

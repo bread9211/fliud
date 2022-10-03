@@ -46,7 +46,7 @@ function Output:addScene(mesh)
 end
 
 function Output:resize()
-    self.simulation.resize();
+    self.simulation:resize();
 end
 
 function Output:render()
@@ -55,7 +55,7 @@ function Output:render()
 end
 
 function Output:update()
-    self.simulation.update();
+    self.simulation:update();
     self:render();
 end
 

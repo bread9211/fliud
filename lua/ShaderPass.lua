@@ -23,8 +23,8 @@ function ShaderPass:new(props)
 end
 
 function ShaderPass:init()
-    self.scene = Scene()
-    self.camera = Camera()
+    self.scene = js:new(Scene)
+    self.camera = js:new(Camera)
     if (self.uniforms) then
         self.material = js:new(RawShaderMaterial, self.props.material)
         self.geometry = js:new(PlaneBufferGeometry, 2.0, 2.0)
