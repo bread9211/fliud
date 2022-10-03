@@ -42,7 +42,7 @@ function ExternalForce:new(simProps)
         },
     });
 
-    self.mouse = Mesh(mouseG, mouseM);
+    self.mouse = js:new(Mesh, mouseG, mouseM);
     self.scene:add(self.mouse);
 
     return setmetatable(self, ExternalForceMT);

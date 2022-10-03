@@ -13,9 +13,9 @@ function Mouse:new()
     local self = {}
 
     self.mouseMoved = false
-    self.coords = js:new(Vector2())
-    self.coords_old = js:new(Vector2())
-    self.diff = js:new(Vector2())
+    self.coords = js:new(Vector2)
+    self.coords_old = js:new(Vector2)
+    self.diff = js:new(Vector2)
     self.timer = nil
     self.count = 0
 
@@ -30,11 +30,11 @@ end
 
 function Mouse:setCoords(x, y)
     if (self.timer) then
-        window.clearTimeout(self.timer)
+        window:clearTimeout(self.timer)
     end
-    self.coords.set((x / Common.width) * 2 - 1, -(y / Common.height) * 2 + 1)
+    self.coords:set((x / Common.width) * 2 - 1, -(y / Common.height) * 2 + 1)
     self.mouseMoved = true
-    self.timer = window.setTimeout(function ()
+    self.timer = window:setTimeout(function ()
         self.mouseMoved = false
     end, 100)
 end
