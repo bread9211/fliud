@@ -36,9 +36,9 @@ function Simulation:new()
         BFECC = true,
     }
     Controls(self.options)
-    self.fboSize = Vector2()
-    self.cellScale = Vector2()
-    self.boundarySpace = Vector2()
+    self.fboSize = js:new(Vector2)
+    self.cellScale = js:new(Vector2)
+    self.boundarySpace = js:new(Vector2)
 
     local width = round(self.options.resolution * Common.width)
     local height = round(self.options.resolution * Common.height)

@@ -22,9 +22,9 @@ function Output:new()
     local self = {}
 
     self.simulation = Simulation:new()
-    self.scene = Scene()
-    self.camera = Camera()
-    self.output = Mesh(PlaneBufferGeometry(2, 2), RawShaderMaterial({
+    self.scene = js:new(Scene)
+    self.camera = js:new(Camera)
+    self.output = js:new(Mesh, js:new(PlaneBufferGeometry, 2, 2), js:new(RawShaderMaterial, {
         vertexShader = FaceVert,
         fragmentShader = ColorFrag,
         uniforms = {
@@ -32,7 +32,7 @@ function Output:new()
                 value = self.simulation.fbos.vel_0.texture,
             },
             boundarySpace = {
-                value = Vector2(),
+                value = js:new(Vector2),
             },
         },
     }))

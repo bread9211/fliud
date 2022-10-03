@@ -55,7 +55,7 @@ end
 
 function Advection:createBoundary()
     local _a
-    local boundaryG = BufferGeometry()
+    local boundaryG = js:new(BufferGeometry)
     local vertices_boundary = {
         -- left
         -1, -1, 0, -1, 1, 0,
@@ -66,13 +66,13 @@ function Advection:createBoundary()
         -- bottom
         1, -1, 0, -1, -1, 0,
     }
-    boundaryG.setAttribute("position", BufferAttribute(vertices_boundary, 3))
-    local boundaryM = RawShaderMaterial({
+    boundaryG.setAttribute("position", js:new(BufferAttribute, vertices_boundary, 3))
+    local boundaryM = js:new(RawShaderMaterial, {
         vertexShader = LineVert,
         fragmentShader = AdvectionFrag,
         uniforms = self.uniforms,
     })
-    self.line = LineSegments(boundaryG, boundaryM)
+    self.line = js:new(LineSegments, boundaryG, boundaryM)
 
     _a = self.scene
 

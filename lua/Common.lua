@@ -27,7 +27,7 @@ end
 function Common:init()
     self.pixelRatio = window.devicePixelRatio
     self:resize()
-    self.renderer = WebGLRenderer({
+    self.renderer = js:new(WebGLRenderer, {
         antialias=true,
         alpha=true,
     })
@@ -36,7 +36,7 @@ function Common:init()
     self.renderer:setSize(self.width,self.height)
     self.renderer:setClearColor(0x000000)
     self.renderer:setPixelRatio(self.pixelRatio)
-    self.clock = Clock()
+    self.clock = js:new(Clock)
     self.clock:start()
 end
 
@@ -45,7 +45,7 @@ function Common:resize()
     self.height = window.innerHeight
     self.aspect = self.width/self.height
     if (self.renderer) then
-        self.renderer.setSize(self.width,self.height)
+        self.renderer:setSize(self.width,self.height)
     end
 end
 

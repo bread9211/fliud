@@ -26,9 +26,9 @@ function ShaderPass:init()
     self.scene = Scene()
     self.camera = Camera()
     if (self.uniforms) then
-        self.material = RawShaderMaterial(self.props.material)
-        self.geometry = PlaneBufferGeometry(2.0, 2.0)
-        self.plane = Mesh(self.geometry, self.material)
+        self.material = js:new(RawShaderMaterial, self.props.material)
+        self.geometry = js:new(PlaneBufferGeometry, 2.0, 2.0)
+        self.plane = js:new(Mesh, self.geometry, self.material)
         self.scene:add(self.plane)
     end
 end
