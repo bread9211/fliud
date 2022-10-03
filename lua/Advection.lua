@@ -12,3 +12,83 @@ local BufferGeometry = THREE.BufferGeometry
 local BufferAttribute = THREE.BufferAttribute
 local RawShaderMaterial = THREE.RawShaderMaterial
 local LineSegments = THREE.LineSegments
+
+local Advection = {}
+local AdvectionMT = {__index = Advection}
+
+function Advection:new(simProps)
+    local self = ShaderPass:new({
+        material = {
+            vertexShader = FaceVert,
+            fragmentShader = AdvectionFrag,
+            uniforms = {
+                boundarySpace = {
+                    value = simProps.cellScale,
+                },
+                px = {
+                    value = simProps.cellScale,
+                },
+                fboSize = {
+                    value = simProps.fboSize,
+                },
+                velocity = {
+                    value = simProps.src.texture,
+                },
+                dt = {
+                    value = simProps.dt,
+                },
+                isBFECC = {
+                    value = true,
+                },
+            }
+        }
+    })
+
+    self:init()
+    return setmetatable(self, AdvectionMT)
+end
+
+function Advection:init()
+    ShaderPass.init(self)
+    self:createBoundary()
+end
+
+function Advection:createBoundary()
+    local _a
+    local boundaryG = BufferGeometry()
+    local vertices_boundary = {
+        -- left
+        -1, -1, 0, -1, 1, 0,
+        -- top
+        -1, 1, 0, 1, 1, 0,
+        -- right
+        1, 1, 0, 1, -1, 0,
+        -- bottom
+        1, -1, 0, -1, -1, 0,
+    }
+    boundaryG.setAttribute("position", BufferAttribute(vertices_boundary, 3))
+    local boundaryM = RawShaderMaterial({
+        vertexShader = LineVert,
+        fragmentShader = AdvectionFrag,
+        uniforms = self.uniforms,
+    })
+    self.line = LineSegments(boundaryG, boundaryM)
+
+    _a = self.scene
+
+    if not (_a) then
+        _a:add(self.line)
+    end
+end
+
+function Advection:updateAdvection(_a)
+    local dt = _a.dt
+    local isBounce = _a.isBounce
+    local BFECC = _a.BFECC
+    if (self.uniforms) then
+        self.uniforms.dt.value = dt
+    end
+    self.line.visible = isBounce
+    self.uniforms.isBFECC.value = BFECC
+    self:update()
+end
