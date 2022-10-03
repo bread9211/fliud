@@ -13,9 +13,13 @@ local ShaderPass = {}
 local ShaderPassMT = {__index = ShaderPass}
 
 function ShaderPass:new(props)
-    local _a = self.props.material
+    local self = {}
+
     self.props = props
+    local _a = self.props.material
     self.uniforms = _a.uniforms and not (_a == nil)
+
+    return setmetatable(self, ShaderPassMT)
 end
 
 function ShaderPass:init()
