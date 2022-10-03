@@ -31,13 +31,13 @@ function ExternalForce:new(simProps)
                 value = simProps.cellScale,
             },
             force = {
-                value = Vector2(0.0, 0.0),
+                value = js:new(Vector2(0.0, 0.0)),
             },
             center = {
-                value = Vector2(0.0, 0.0),
+                value = js:new(Vector2(0.0, 0.0)),
             },
             scale = {
-                value = Vector2(simProps.cursor_size, simProps.cursor_size),
+                value = js:new(Vector2(simProps.cursor_size, simProps.cursor_size)),
             },
         },
     });

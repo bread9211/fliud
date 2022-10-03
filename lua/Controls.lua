@@ -7,8 +7,12 @@ local Controls = {}
 local ControlsMT = {__index = Controls}
 
 function Controls:new(params)
+    local self = {}
+
     self.params = params
     self:init()
+
+    return setmetatable(self, ControlsMT)
 end
 
 function Controls:init()
