@@ -13,9 +13,9 @@ function Mouse:new()
     local self = {}
 
     self.mouseMoved = false
-    self.coords = Vector2()
-    self.coords_old = Vector2()
-    self.diff = Vector2()
+    self.coords = Vector2:new()
+    self.coords_old = Vector2:new()
+    self.diff = Vector2:new()
     self.timer = nil
     self.count = 0
 

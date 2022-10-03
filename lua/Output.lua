@@ -32,7 +32,7 @@ function Output:new()
                 value = self.simulation.fbos.vel_0.texture,
             },
             boundarySpace = {
-                value = Vector2(),
+                value = Vector2:new(),
             },
         },
     }))

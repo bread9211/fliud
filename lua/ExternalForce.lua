@@ -31,13 +31,13 @@ function ExternalForce:new(simProps)
                 value = simProps.cellScale,
             },
             force = {
-                value = Vector2(0.0, 0.0),
+                value = Vector2:new(0.0, 0.0),
             },
             center = {
-                value = Vector2(0.0, 0.0),
+                value = Vector2:new(0.0, 0.0),
             },
             scale = {
-                value = Vector2(simProps.cursor_size, simProps.cursor_size),
+                value = Vector2:new(simProps.cursor_size, simProps.cursor_size),
             },
         },
     });
@@ -45,7 +45,7 @@ function ExternalForce:new(simProps)
     self.mouse = Mesh(mouseG, mouseM);
     self.scene:add(self.mouse);
 
-    return self;
+    return setmetatable(self, ExternalForceMT);
 end
 
 function ExternalForce:updateExternalForce(props)
