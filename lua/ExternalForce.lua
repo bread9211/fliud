@@ -45,7 +45,7 @@ function ExternalForce:new(simProps)
     self.mouse = Mesh(mouseG, mouseM);
     self.scene:add(self.mouse);
 
-    return self;
+    return setmetatable(self, ExternalForceMT);
 end
 
 function ExternalForce:updateExternalForce(props)

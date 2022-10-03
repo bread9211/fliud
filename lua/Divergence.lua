@@ -1,6 +1,3 @@
-local window = js.global
-local THREE = window.THREE
-
 local ShaderPass = require("lua.ShaderPass")
 
 local get = require("utils.shaders")
