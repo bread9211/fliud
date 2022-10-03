@@ -64,4 +64,5 @@ function ExternalForce:updateExternalForce(props)
     ShaderPass.update(self);
 end
 
+print("ExternalForce.lua initialized")
 return ExternalForce

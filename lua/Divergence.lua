@@ -39,7 +39,8 @@ function Divergence:updateDivergence(_a)
     if (self.uniforms) then
         self.uniforms.velocity.value = vel.texture;
     end
-    ShaderPass.update(self);
+    self:update();
 end
 
+print("Divergence.lua initialized")
 return Divergence

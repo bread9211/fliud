@@ -19,6 +19,8 @@ local Output = {}
 local OutputMT = {__index = Output}
 
 function Output:new()
+    print("Generating output...")
+
     local self = {}
 
     self.simulation = Simulation:new()
@@ -38,6 +40,7 @@ function Output:new()
     }))
     self.scene:add(self.output)
 
+    print("Generated output")
     return setmetatable(self, OutputMT)
 end
 
@@ -60,5 +63,4 @@ function Output:update()
 end
 
 print("Output.lua initialized")
-
 return Output;

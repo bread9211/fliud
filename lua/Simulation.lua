@@ -21,6 +21,8 @@ local function round(n)
 end
 
 function Simulation:new()
+    print("Creating simulation...")
+
     local self = {}
 
     self.options = {
@@ -48,19 +50,19 @@ function Simulation:new()
     self.fboSize:set(width, height)
     self.fbos = createFbos(self.fboSize)
 
-    self.advection = Advection({
+    self.advection = Advection:new({
         cellScale = self.cellScale,
         fboSize = self.fboSize,
         dt = self.options.dt,
         src = self.fbos.vel_0,
         dst = self.fbos.vel,
     })
-    self.externalForce = ExternalForce({
+    self.externalForce = ExternalForce:new({
         cellScale = self.cellScale,
         cursor_size = self.options.cursor_size,
         dst = self.fbos.vel,
     })
-    self.viscous = Viscous({
+    self.viscous = Viscous:new({
         cellScale = self.cellScale,
         boundarySpace = self.boundarySpace,
         viscous = self.options.viscous,
@@ -69,21 +71,21 @@ function Simulation:new()
         dst_ = self.fbos.vel_viscous0,
         dt = self.options.dt,
     })
-    self.divergence = Divergence({
+    self.divergence = Divergence:new({
         cellScale = self.cellScale,
         boundarySpace = self.boundarySpace,
         src = self.fbos.vel_viscous0,
         dst = self.fbos.div,
         dt = self.options.dt,
     })
-    self.poisson = Poisson({
+    self.poisson = Poisson:new({
         cellScale = self.cellScale,
         boundarySpace = self.boundarySpace,
         src = self.fbos.div,
         dst = self.fbos.pressure,
         dst_ = self.fbos.pressure_0,
     })
-    self.pressure = Pressure({
+    self.pressure = Pressure:new({
         cellScale = self.cellScale,
         boundarySpace = self.boundarySpace,
         src_p = self.fbos.pressure_0,
@@ -92,6 +94,7 @@ function Simulation:new()
         dt = self.options.dt,
     })
 
+    print("Created simulation")
     return setmetatable(self, SimulationMT)
 end
 
@@ -126,4 +129,5 @@ function Simulation:update()
     self.pressure:updatePressure({ vel = vel, pressure = pressure });
 end
 
+print("Simulation.lua initialized")
 return Simulation
