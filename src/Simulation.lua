@@ -50,24 +50,29 @@ function Simulation:new()
     self.fboSize:set(width, height)
     self.fbos = createFbos(self.fboSize)
 
+    print(self.cellScale)
+    print(self.fboSize)
+    print(self.options.dt)
+    print(self.fbos.vel_0)
+    print(self.fbos.vel_1)
+
     self.advection = Advection:new({
         cellScale = self.cellScale,
         fboSize = self.fboSize,
         dt = self.options.dt,
         src = self.fbos.vel_0,
-        dst = self.fbos.vel,
+        dst = self.fbos.vel_1,
     })
-    self.advection:initAdvection()
     self.externalForce = ExternalForce:new({
         cellScale = self.cellScale,
         cursor_size = self.options.cursor_size,
-        dst = self.fbos.vel,
+        dst = self.fbos.vel_1,
     })
     self.viscous = Viscous:new({
         cellScale = self.cellScale,
         boundarySpace = self.boundarySpace,
         viscous = self.options.viscous,
-        src = self.fbos.vel,
+        src = self.fbos.vel_1,
         dst = self.fbos.vel_viscous1,
         dst_ = self.fbos.vel_viscous0,
         dt = self.options.dt,

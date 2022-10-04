@@ -6,7 +6,7 @@ local Common = require("src.Common")
 local Scene = THREE.Scene
 local Camera = THREE.Camera
 local RawShaderMaterial = THREE.RawShaderMaterial
-local PlaneBufferGeometry = THREE.PlaneBufferGeometry
+local PlaneGeometry = THREE.PlaneGeometry
 local Mesh = THREE.Mesh
 
 local ShaderPass = {}
@@ -16,7 +16,11 @@ function ShaderPass:new(props)
     local self = {}
 
     self.props = props
-    self.uniforms = not (self.props.material) and self.props.material.uniforms
+
+    local _a = self.props.material
+    if (_a) then
+        self.uniforms = _a.uniforms
+    end
 
     return setmetatable(self, ShaderPassMT)
 end
@@ -26,7 +30,7 @@ function ShaderPass:init()
     self.camera = js.new(Camera)
     if (self.uniforms) then
         self.material = js.new(RawShaderMaterial, self.props.material)
-        self.geometry = js.new(PlaneBufferGeometry, 2.0, 2.0)
+        self.geometry = js.new(PlaneGeometry, 2.0, 2.0)
         self.plane = js.new(Mesh, self.geometry, self.material)
         self.scene:add(self.plane)
     end

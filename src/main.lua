@@ -2,7 +2,13 @@ local window = js.global
 
 local WebGL = require("src.WebGL")
 
-WebGL:new(window.document)
+local o = WebGL:new(window.document)
+
+o:loop()
+o:resize()
+window:addEventListener("resize", function ()
+    WebGL:resize()
+end)
 
 print("main.lua initialized")
 

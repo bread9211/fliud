@@ -1,7 +1,8 @@
 local window = js.global
 local THREE = window.THREE
 
-local ShaderPass = require("src.ShaderPass")
+local Advection = require("src.ShaderPass")
+local Common = require("src.Common")
 
 local get = require("utils.shaders")
 local FaceVert = get("face.vert")
@@ -10,20 +11,19 @@ local AdvectionFrag = get("advection.frag")
 
 local BufferGeometry = THREE.BufferGeometry
 local BufferAttribute = THREE.BufferAttribute
-local RawShaderMaterial = THREE.RawShaderMaterial
 local LineSegments = THREE.LineSegments
+local Scene = THREE.Scene
+local Camera = THREE.Camera
+local RawShaderMaterial = THREE.RawShaderMaterial
+local PlaneGeometry = THREE.PlaneGeometry
+local Mesh = THREE.Mesh
 
-local Advection = {}
-local AdvectionMT = {__index = function (table, key)
-    if (ShaderPass[key]) then
-        return ShaderPass.init
-    else
-        return Advection[key]
-    end
-end}
+local AdvectionMT = {__index = Advection}
 
 function Advection:new(simProps)
-    local self = ShaderPass:new({
+    print(simProps.fboSize)
+
+    self.props = {
         material = {
             vertexShader = FaceVert,
             fragmentShader = AdvectionFrag,
@@ -49,17 +49,28 @@ function Advection:new(simProps)
             }
         },
         output = simProps.dst
-    })
+    }
+
+    local _a = self.props.material
+    if (_a) then
+        self.uniforms = _a.uniforms
+    end
+    
+    self:initAdvection()
 
     return setmetatable(self, AdvectionMT)
 end
 
 function Advection:initAdvection()
-    self:init()
-    self:createBoundary()
-end
+    self.scene = js.new(Scene)
+    self.camera = js.new(Camera)
+    if (self.uniforms) then
+        self.material = js.new(RawShaderMaterial, self.props.material)
+        self.geometry = js.new(PlaneGeometry, 2.0, 2.0)
+        self.plane = js.new(Mesh, self.geometry, self.material)
+        self.scene:add(self.plane)
+    end
 
-function Advection:createBoundary()
     local _a
     local boundaryG = js.new(BufferGeometry)
     local vertices_boundary = {
@@ -87,16 +98,29 @@ function Advection:createBoundary()
     end
 end
 
-function Advection:updateAdvection(_a)
-    local dt = _a.dt
-    local isBounce = _a.isBounce
-    local BFECC = _a.BFECC
+function Advection:updateAdvection(_a1)
+    local dt = _a1.dt
+    local isBounce = _a1.isBounce
+    local BFECC = _a1.BFECC
     if (self.uniforms) then
         self.uniforms.dt.value = dt
     end
     self.line.visible = isBounce
     self.uniforms.isBFECC.value = BFECC
-    self:update()
+
+    local _a, _b, _c = Common.renderer, Common.renderer, Common.renderer
+
+    if not (_a) then
+        _a:setRenderTarget(self.props.output)
+    end
+
+    if not (_b) then
+        _b:render(self.scene, self.camera)
+    end
+
+    if not (_b) then
+        _c:setRenderTarget(nil)
+    end
 end
 
 

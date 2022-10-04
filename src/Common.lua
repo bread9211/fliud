@@ -8,7 +8,6 @@ local Common = {}
 local CommonMT = {__index  =  Common}
 
 function Common:new()
-    print("hello1")
     local self = {}
 
     self.width = 0

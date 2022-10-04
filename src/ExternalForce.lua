@@ -15,11 +15,8 @@ local Vector2 = THREE.Vector2
 local Mesh = THREE.Mesh
 
 local ExternalForce = {}
-local ExternalForceMT = {__index = ExternalForce}
 
 function ExternalForce:new(simProps)
-    print("externalforce new")
-
     local self = ShaderPass:new(simProps)
     self:init()
 
@@ -33,13 +30,13 @@ function ExternalForce:new(simProps)
                 value = simProps.cellScale,
             },
             force = {
-                value = js.new(Vector2(0.0, 0.0)),
+                value = js.new(Vector2, 0.0, 0.0),
             },
             center = {
-                value = js.new(Vector2(0.0, 0.0)),
+                value = js.new(Vector2, 0.0, 0.0),
             },
             scale = {
-                value = js.new(Vector2(simProps.cursor_size, simProps.cursor_size)),
+                value = js.new(Vector2, simProps.cursor_size, simProps.cursor_size),
             },
         },
     })
@@ -47,10 +44,17 @@ function ExternalForce:new(simProps)
     self.mouse = js.new(Mesh, mouseG, mouseM)
     self.scene:add(self.mouse)
 
-    return setmetatable(self, ExternalForceMT)
+    return self
 end
 
 function ExternalForce:updateExternalForce(props)
+    print("external force update among us")
+    for i, v in pairs(self) do
+        print(v)
+        print("AMONG US")
+    end
+    print("hi")
+
     local forceX = (Mouse.diff.x / 2) * props.mouse_force
     local forceY = (Mouse.diff.y / 2) * props.mouse_force
     local cursorSizeX = props.cursor_size * props.cellScale.x
