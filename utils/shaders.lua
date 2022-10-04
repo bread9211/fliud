@@ -197,6 +197,6 @@ return function (s)
     if (f) then
         return f
     else
-        print(s .. "not found")
+        print(s .. " not found")
     end
 end
