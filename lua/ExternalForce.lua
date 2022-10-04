@@ -19,10 +19,10 @@ local ExternalForceMT = {__index = ExternalForce}
 
 function ExternalForce:new(simProps)
     local self = ShaderPass:new(simProps)
-    ShaderPass.init(self)
+    self:init()
 
-    local mouseG = PlaneBufferGeometry(1, 1);
-    local mouseM = RawShaderMaterial({
+    local mouseG = js:new(PlaneBufferGeometry, 1, 1);
+    local mouseM = js:new(RawShaderMaterial, {
         vertexShader = MouseFrag,
         fragmentShader = ExternalForceFrag,
         blending = AdditiveBlending,
@@ -61,7 +61,7 @@ function ExternalForce:updateExternalForce(props)
     uniforms.center.value:set(centerX, centerY);
     uniforms.scale.value:set(props.cursor_size, props.cursor_size);
 
-    ShaderPass.update(self);
+    self:update();
 end
 
 print("ExternalForce.lua initialized")
