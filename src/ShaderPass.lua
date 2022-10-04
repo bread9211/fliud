@@ -16,8 +16,7 @@ function ShaderPass:new(props)
     local self = {}
 
     self.props = props
-    local _a = self.props.material
-    self.uniforms = not (_a) and _a.uniforms
+    self.uniforms = not (self.props.material) and self.props.material.uniforms
 
     return setmetatable(self, ShaderPassMT)
 end

@@ -57,9 +57,7 @@ function Simulation:new()
         src = self.fbos.vel_0,
         dst = self.fbos.vel,
     })
-    print("test")
     self.advection:initAdvection()
-    print("test")
     self.externalForce = ExternalForce:new({
         cellScale = self.cellScale,
         cursor_size = self.options.cursor_size,

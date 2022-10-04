@@ -47,19 +47,15 @@ function Advection:new(simProps)
                     value = true,
                 },
             }
-        }
+        },
+        output = simProps.dst
     })
-
-    self:init()
-    self:createBoundary()
 
     return setmetatable(self, AdvectionMT)
 end
 
 function Advection:initAdvection()
-    print("test")
     self:init()
-    print("test1")
     self:createBoundary()
 end
 
@@ -76,7 +72,7 @@ function Advection:createBoundary()
         -- bottom
         1, -1, 0, -1, -1, 0,
     }
-    boundaryG.setAttribute("position", js.new(BufferAttribute, vertices_boundary, 3))
+    boundaryG:setAttribute("position", js.new(BufferAttribute, vertices_boundary, 3))
     local boundaryM = js.new(RawShaderMaterial, {
         vertexShader = LineVert,
         fragmentShader = AdvectionFrag,
@@ -102,6 +98,7 @@ function Advection:updateAdvection(_a)
     self.uniforms.isBFECC.value = BFECC
     self:update()
 end
+
 
 print("Advection.lua initialized")
 return Advection
