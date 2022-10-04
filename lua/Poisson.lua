@@ -43,7 +43,7 @@ function Poisson:updatePoisson(_a)
     local p_in, p_out
     for i = 0, iterations, 1 do
         local isOdd = (i % 2) == 0
-        p_in =  isOdd and self.props.output0 or self.props.output1
+        p_in = isOdd and self.props.output0 or self.props.output1
         p_out = isOdd and self.props.output1 or self.props.output0
         self.uniforms.pressure.value = p_in.texture
         self.props.output = p_out

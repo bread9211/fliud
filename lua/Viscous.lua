@@ -60,7 +60,7 @@ function Viscous:updateViscous(_a)
             self.uniforms.velocity_new.value = fbo_in.texture
         end
         self.props.output = fbo_out
-        if (!!fbo_in and self.uniforms) then
+        if (fbo_in and self.uniforms) then
             self.uniforms.dt.value = dt
         end
         self:update()

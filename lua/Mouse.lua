@@ -7,7 +7,9 @@ local Common = require("lua.Common")
 local Vector2 = THREE.Vector2
 
 local Mouse = {}
-local MouseMT = {__index = Mouse}
+local MouseMT = {__index = Mouse, __newindex = function ()
+    print("help")
+end}
 
 function Mouse:new()
     local self = {}
@@ -19,7 +21,7 @@ function Mouse:new()
     self.timer = nil
     self.count = 0
 
-    return setmetatable(self, MouseMT)
+    return setmetatable(self, Mouse)
 end
 
 function Mouse:init()
@@ -51,7 +53,7 @@ end
 
 function Mouse:onDocumentTouchMove(event)
     if (event.touches.length == 1) then
-        self.setCoords(event.touches[0].pageX, event.touches[0].pageY)
+        self:setCoords(event.touches[0].pageX, event.touches[0].pageY)
     end
 end
 
@@ -64,4 +66,4 @@ function Mouse:update()
 end
 
 print("Mouse.lua initialized")
-return Mouse:new()
+return Mouse

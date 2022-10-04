@@ -2,28 +2,30 @@ local window = js.global
 local THREE = window.THREE
 
 local ShaderPass = require("lua.ShaderPass")
+print("debug1")
 local Mouse = require("lua.Mouse")
-
 local get = require("utils.shaders")
-local MouseFrag = get("mouse.frag")
+local MouseVert = get("mouse.vert")
 local ExternalForceFrag = get("externalForce.frag")
 
-local PlaneBufferGeometry = THREE.PlaneBufferGeometry;
-local RawShaderMaterial = THREE.RawShaderMaterial;
-local AdditiveBlending = THREE.AdditiveBlending;
-local Vector2 = THREE.Vector2;
-local Mesh = THREE.Mesh;
+local PlaneBufferGeometry = THREE.PlaneBufferGeometry
+local RawShaderMaterial = THREE.RawShaderMaterial
+local AdditiveBlending = THREE.AdditiveBlending
+local Vector2 = THREE.Vector2
+local Mesh = THREE.Mesh
 
 local ExternalForce = {}
 local ExternalForceMT = {__index = ExternalForce}
 
 function ExternalForce:new(simProps)
+    print("externalforce new")
+
     local self = ShaderPass:new(simProps)
     self:init()
 
-    local mouseG = js:new(PlaneBufferGeometry, 1, 1);
+    local mouseG = js:new(PlaneBufferGeometry, 1, 1)
     local mouseM = js:new(RawShaderMaterial, {
-        vertexShader = MouseFrag,
+        vertexShader = MouseVert,
         fragmentShader = ExternalForceFrag,
         blending = AdditiveBlending,
         uniforms = {
@@ -40,28 +42,27 @@ function ExternalForce:new(simProps)
                 value = js:new(Vector2(simProps.cursor_size, simProps.cursor_size)),
             },
         },
-    });
+    })
 
-    self.mouse = js:new(Mesh, mouseG, mouseM);
-    self.scene:add(self.mouse);
+    self.mouse = js:new(Mesh, mouseG, mouseM)
+    self.scene:add(self.mouse)
 
-    return setmetatable(self, ExternalForceMT);
+    return setmetatable(self, ExternalForceMT)
 end
 
 function ExternalForce:updateExternalForce(props)
-    local forceX = (Mouse.diff.x / 2) * props.mouse_force;
-    local forceY = (Mouse.diff.y / 2) * props.mouse_force;
-    local cursorSizeX = props.cursor_size * props.cellScale.x;
-    local cursorSizeY = props.cursor_size * props.cellScale.y;
-    local centerX = math.min(math.max(Mouse.coords.x, -1 + cursorSizeX + props.cellScale.x * 2), 1 - cursorSizeX - props.cellScale.x * 2);
-    local centerY = math.min(math.max(Mouse.coords.y, -1 + cursorSizeY + props.cellScale.y * 2), 1 - cursorSizeY - props.cellScale.y * 2);
-    local uniforms = self.mouse.material.uniforms;
+    local forceX = (Mouse.diff.x / 2) * props.mouse_force
+    local forceY = (Mouse.diff.y / 2) * props.mouse_force
+    local cursorSizeX = props.cursor_size * props.cellScale.x
+    local cursorSizeY = props.cursor_size * props.cellScale.y
+    local centerX = math.min(math.max(Mouse.coords.x, -1 + cursorSizeX + props.cellScale.x * 2), 1 - cursorSizeX - props.cellScale.x * 2)
+    local centerY = math.min(math.max(Mouse.coords.y, -1 + cursorSizeY + props.cellScale.y * 2), 1 - cursorSizeY - props.cellScale.y * 2)
 
-    uniforms.force.value:set(forceX, forceY);
-    uniforms.center.value:set(centerX, centerY);
-    uniforms.scale.value:set(props.cursor_size, props.cursor_size);
+    self.mouse.material.uniforms.force.value:set(forceX, forceY)
+    self.mouse.material.uniforms.center.value:set(centerX, centerY)
+    self.mouse.material.uniforms.scale.value:set(props.cursor_size, props.cursor_size)
 
-    self:update();
+    self:update()
 end
 
 print("ExternalForce.lua initialized")
