@@ -1,7 +1,6 @@
 local window = js.global
 local THREE = window.THREE
 
-local Advection = require("src.ShaderPass")
 local Common = require("src.Common")
 
 local get = require("utils.shaders")
@@ -18,11 +17,10 @@ local RawShaderMaterial = THREE.RawShaderMaterial
 local PlaneGeometry = THREE.PlaneGeometry
 local Mesh = THREE.Mesh
 
+local Advection = {}
 local AdvectionMT = {__index = Advection}
 
 function Advection:new(simProps)
-    print(simProps.fboSize)
-
     self.props = {
         material = {
             vertexShader = FaceVert,
@@ -110,15 +108,15 @@ function Advection:updateAdvection(_a1)
 
     local _a, _b, _c = Common.renderer, Common.renderer, Common.renderer
 
-    if not (_a) then
+    if (_a) then
         _a:setRenderTarget(self.props.output)
     end
 
-    if not (_b) then
+    if (_b) then
         _b:render(self.scene, self.camera)
     end
 
-    if not (_b) then
+    if (_b) then
         _c:setRenderTarget(nil)
     end
 end

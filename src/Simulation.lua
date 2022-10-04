@@ -50,12 +50,6 @@ function Simulation:new()
     self.fboSize:set(width, height)
     self.fbos = createFbos(self.fboSize)
 
-    print(self.cellScale)
-    print(self.fboSize)
-    print(self.options.dt)
-    print(self.fbos.vel_0)
-    print(self.fbos.vel_1)
-
     self.advection = Advection:new({
         cellScale = self.cellScale,
         fboSize = self.fboSize,
