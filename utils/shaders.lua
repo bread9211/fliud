@@ -39,7 +39,7 @@ local shaders = {
     uniform vec2 px;
     varying vec2 vUv;
     
-    void main() {
+    void main(){
         vec2 pos = position.xy * scale * 2.0 * px + center;
         vUv = uv;
         gl_Position = vec4(pos, 0.0, 1.0);
@@ -49,6 +49,7 @@ local shaders = {
     uniform sampler2D velocity;
     uniform float dt;
     uniform bool isBFECC;
+    // uniform float uvScale;
     uniform vec2 fboSize;
     uniform vec2 px;
     varying vec2 uv;
@@ -85,21 +86,22 @@ local shaders = {
     }]],
 
     ["color.frag"] = [[precision highp float;
-    uniform sampler2D velocity;
-    varying vec2 uv;
-    
-    void main() {
-        vec2 vel = texture2D(velocity, uv).xy;
-        float len = length(vel);
-        vel = vel * 0.5 + 0.5;
+        uniform sampler2D velocity;
+        varying vec2 uv;
         
-        vec3 color = vec3(vel.x, vel.y, 1.0);
-        color = mix(vec3(1.0), color, len);
-    
-        gl_FragColor = vec4(color,  1.0);
-    }]],
+        void main(){
+            vec2 vel = texture2D(velocity, uv).xy;
+            float len = length(vel);
+            vel = vel * 0.5 + 0.5;
+            
+            vec3 color = vec3(vel.x, vel.y, 1.0);
+            color = mix(vec3(1.0), color, len);
+        
+            gl_FragColor = vec4(color,  1.0);
+        }]],
 
-    ["divergence.frag"] = [[uniform sampler2D velocity;
+    ["divergence.frag"] = [[precision highp float;
+    uniform sampler2D velocity;
     uniform float dt;
     uniform vec2 px;
     varying vec2 uv;
@@ -114,22 +116,23 @@ local shaders = {
         gl_FragColor = vec4(divergence / dt);
     }]],
 
-    ["externalForce.frag"] = [[uniforms sampler2D velocity;
-    uniforms vec2 force;
-    uniforms vec2 fboSize;
+    ["externalForce.frag"] = [[precision highp float;
+
+    uniform vec2 force;
+    uniform vec2 center;
+    uniform vec2 scale;
+    uniform vec2 px;
     varying vec2 vUv;
     
     void main(){
-      vec2 st = gl_FragCoord.xy / fboSize;
-      vec2 oldVel = sampler2D(velocity, st);
-    
-      // The more mouse-centered, the larger the value.
-      float intensity = 1.0 - min(length(vUv * 2.0 - 1.0), 1.0);
-      // Just add the size of the mouse at the uv point to the velocity.
-      gl_FragColor = vec4(oldVel + intensity * force, 0, d);
+        vec2 circle = (vUv - 0.5) * 2.0;
+        float d = 1.0-min(length(circle), 1.0);
+        d *= d;
+        gl_FragColor = vec4(force * d, 0, 1);
     }]],
 
-    ["poisson.frag"] = [[uniform sampler2D pressure;
+    ["poisson.frag"] = [[precision highp float;
+    uniform sampler2D pressure;
     uniform sampler2D divergence;
     uniform vec2 px;
     varying vec2 uv;
@@ -141,17 +144,16 @@ local shaders = {
         float p2 = texture2D(pressure, uv+vec2(0, px.y * 2.0 )).r;
         float p3 = texture2D(pressure, uv-vec2(0, px.y * 2.0 )).r;
         float div = texture2D(divergence, uv).r;
-    
-        float newP = (p0 + p1 + p2 + p3) / 4.0 - div;
         
+        float newP = (p0 + p1 + p2 + p3) / 4.0 - div;
         gl_FragColor = vec4(newP);
     }]],
 
     ["pressure.frag"] = [[precision highp float;
     uniform sampler2D pressure;
     uniform sampler2D velocity;
-    uniform float dt;
     uniform vec2 px;
+    uniform float dt;
     varying vec2 uv;
     
     void main(){
@@ -164,8 +166,7 @@ local shaders = {
     
         vec2 v = texture2D(velocity, uv).xy;
         vec2 gradP = vec2(p0 - p1, p2 - p3) * 0.5;
-        v = v - dt * gradP;
-        // New velocity at uv point
+        v = v - gradP * dt;
         gl_FragColor = vec4(v, 0.0, 1.0);
     }]],
 
