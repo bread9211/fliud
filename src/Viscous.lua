@@ -1,8 +1,14 @@
 local window = js.global
+local THREE = window.THREE
 
-local ShaderPass = require("src.ShaderPass")
+local Scene = THREE.Scene
+local Camera = THREE.Camera
+local RawShaderMaterial = THREE.RawShaderMaterial
+local PlaneGeometry = THREE.PlaneGeometry
+local Mesh = THREE.Mesh
 
 local get = require("utils.shaders")
+local Object = require("utils.convertToJSObject")
 local FaceVert = get("face.vert")
 local ViscousFrag = get("viscous.frag")
 
@@ -10,7 +16,9 @@ local Viscous = {}
 local ViscousMT = {__index = Viscous}
 
 function Viscous:new(simProps)
-    local self = ShaderPass:new({
+    local self = {}
+
+    self.props = {
         material = {
             vertexShader = FaceVert,
             fragmentShader = ViscousFrag,
@@ -38,9 +46,22 @@ function Viscous:new(simProps)
         output = simProps.dst,
         output0 = simProps.dst_,
         output1 = simProps.dst,
-    })
+    }
 
-    self:init()
+    local _a = self.props.material
+    if (_a) then
+        self.uniforms = _a.uniforms
+    end
+
+    self.scene = js.new(Scene)
+    self.camera = js.new(Camera)
+    if (self.uniforms) then
+        self.material = js.new(RawShaderMaterial, Object(self.props.material))
+        self.geometry = js.new(PlaneGeometry, 2.0, 2.0)
+        self.plane = js.new(Mesh, self.geometry, self.material)
+        self.scene:add(self.plane)
+    end
+    
     return setmetatable(self, ViscousMT)
 end
 

@@ -8700,6 +8700,11 @@
 			this.glslVersion = null;
 
 			if (parameters !== undefined) {
+				var a = [];
+				for (const i in parameters) {
+					console.log(i);
+					// a.push(parameters.get())
+				}
 				this.setValues(parameters);
 			}
 		}

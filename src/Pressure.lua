@@ -1,8 +1,16 @@
 local window = js.global
+local THREE = window.THREE
 
-local ShaderPass = require("src.ShaderPass")
+local Common = require("src.Common")
+
+local Scene = THREE.Scene
+local Camera = THREE.Camera
+local RawShaderMaterial = THREE.RawShaderMaterial
+local PlaneGeometry = THREE.PlaneGeometry
+local Mesh = THREE.Mesh
 
 local get = require("utils.shaders")
+local Object = require("utils.convertToJSObject")
 local FaceVert = get("face.vert")
 local PressureFrag = get("pressure.frag")
 
@@ -10,7 +18,9 @@ local Pressure = {}
 local PressureMT = {__index = Pressure}
 
 function Pressure:new(simProps)
-    local self = ShaderPass:new({
+    local self = {}
+
+    self.props = {
         material = {
             vertexShader = FaceVert,
             fragmentShader = PressureFrag,
@@ -33,19 +43,42 @@ function Pressure:new(simProps)
             },
         },
         output = simProps.dst,
-    })
-    print("pressure new")
-    self:init()
+    }
+
+    local _a = self.props.material
+    if (_a) then
+        self.uniforms = _a.uniforms
+    end
+    
+    self.scene = js.new(Scene)
+    self.camera = js.new(Camera)
+    if (self.uniforms) then
+        self.material = js.new(RawShaderMaterial, Object(self.props.material))
+        self.geometry = js.new(PlaneGeometry, 2.0, 2.0)
+        self.plane = js.new(Mesh, self.geometry, self.material)
+        self.scene:add(self.plane)
+    end
     return setmetatable(self, PressureMT)
 end
 
-function Pressure:updatePressure(_a)
-    local vel = _a.vel
-    local pressure = _a.pressure
+function Pressure:updatePressure(_a1)
+    local vel = _a1.vel
+    local pressure = _a1.pressure
     self.uniforms.velocity.value = vel.texture
     self.uniforms.pressure.value = pressure.texture
-    self:update()
-    print("pressure update")
+    local _a, _b, _c = Common.renderer, Common.renderer, Common.renderer
+
+    if not (_a) then
+        _a:setRenderTarget(self.props.output)
+    end
+
+    if not (_b) then
+        _b:render(self.scene, self.camera)
+    end
+
+    if not (_b) then
+        _c:setRenderTarget(nil)
+    end
 end
 
 return Pressure

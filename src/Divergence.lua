@@ -1,14 +1,26 @@
-local ShaderPass = require("src.ShaderPass")
+local window = js.global
+local THREE = window.THREE
+
+local Common = require("src.Common")
 
 local get = require("utils.shaders")
+local Object = require("utils.convertToJSObject")
 local FaceVert = get("face.vert")
 local DivergenceFrag = get("divergence.frag")
+
+local Scene = THREE.Scene
+local Camera = THREE.Camera
+local RawShaderMaterial = THREE.RawShaderMaterial
+local PlaneGeometry = THREE.PlaneGeometry
+local Mesh = THREE.Mesh
 
 local Divergence = {}
 local DivergenceMT = {__index = Divergence}
 
 function Divergence:new(simProps)
-    local self = ShaderPass:new({
+    local self = {}
+
+    self.props = {
         material = {
             vertexShader = FaceVert,
             fragmentShader = DivergenceFrag,
@@ -28,9 +40,21 @@ function Divergence:new(simProps)
             },
         }, 
         output = simProps.dst
-    })
+    }
 
-    self:init()
+    local _a = self.props.material
+    if (_a) then
+        self.uniforms = _a.uniforms
+    end
+
+    self.scene = js.new(Scene)
+    self.camera = js.new(Camera)
+    if (self.uniforms) then
+        self.material = js.new(RawShaderMaterial, Object(self.props.material))
+        self.geometry = js.new(PlaneGeometry, 2.0, 2.0)
+        self.plane = js.new(Mesh, self.geometry, self.material)
+        self.scene:add(self.plane)
+    end
     return setmetatable(self, DivergenceMT)
 end
 
@@ -39,7 +63,20 @@ function Divergence:updateDivergence(_a)
     if (self.uniforms) then
         self.uniforms.velocity.value = vel.texture;
     end
-    self:update();
+    
+    local _a, _b, _c = Common.renderer, Common.renderer, Common.renderer
+
+    if not (_a) then
+        _a:setRenderTarget(self.props.output)
+    end
+
+    if not (_b) then
+        _b:render(self.scene, self.camera)
+    end
+
+    if not (_b) then
+        _c:setRenderTarget(nil)
+    end
 end
 
 print("Divergence.lua initialized")

@@ -99,7 +99,7 @@ function Simulation:new()
 end
 
 function Simulation:resize()
-    local _self = self;
+    local _self = self
     for _, v in ipairs(self.fbos) do
         v:setSize(_self.fboSize.x, _self.fboSize.y)
     end
@@ -107,26 +107,26 @@ end
 
 function Simulation:update()
     if (self.options.isBounce) then
-        self.boundarySpace:set(0, 0);
+        self.boundarySpace:set(0, 0)
     else
-        self.boundarySpace:copy(self.cellScale);
+        self.boundarySpace:copy(self.cellScale)
     end
-    self.advection:updateAdvection(self.options);
+    self.advection:updateAdvection(self.options)
     self.externalForce:updateExternalForce({
         cursor_size = self.options.cursor_size,
         mouse_force = self.options.mouse_force,
         cellScale = self.cellScale,
-    });
+    })
     local vel = self.option.isViscous and self.fbos.vel_1 or self.viscous:updateViscous({
         viscous = self.options.viscous,
         iterations = self.options.iterations_viscous,
         dt = self.options.dt,
     })
-    self.divergence:updateDivergence({ vel = vel });
+    self.divergence:updateDivergence({ vel = vel })
     local pressure = self.poisson:updatePoisson({
         iterations = self.options.iterations_poisson,
-    });
-    self.pressure:updatePressure({ vel = vel, pressure = pressure });
+    })
+    self.pressure:updatePressure({ vel = vel, pressure = pressure })
 end
 
 print("Simulation.lua initialized")

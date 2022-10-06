@@ -2,6 +2,7 @@ local window = js.global
 local THREE = window.THREE
 
 local Common = require("src.Common")
+local Object = require("utils.convertToJSObject")
 
 local get = require("utils.shaders")
 local FaceVert = get("face.vert")
@@ -63,7 +64,7 @@ function Advection:initAdvection()
     self.scene = js.new(Scene)
     self.camera = js.new(Camera)
     if (self.uniforms) then
-        self.material = js.new(RawShaderMaterial, self.props.material)
+        self.material = js.new(RawShaderMaterial, Object(self.props.material))
         self.geometry = js.new(PlaneGeometry, 2.0, 2.0)
         self.plane = js.new(Mesh, self.geometry, self.material)
         self.scene:add(self.plane)

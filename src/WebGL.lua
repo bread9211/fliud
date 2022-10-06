@@ -25,7 +25,6 @@ function WebGL:resize()
 end
 
 function WebGL:render()
-    print(self)
     Mouse:update()
     Common:update()
     -- for i, v in ipairs(self) do
