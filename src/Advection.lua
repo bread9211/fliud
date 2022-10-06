@@ -107,18 +107,14 @@ function Advection:updateAdvection(_a1)
     self.line.visible = isBounce
     self.uniforms.isBFECC.value = BFECC
 
-    local _a, _b, _c = Common.renderer, Common.renderer, Common.renderer
+    local renderer = Common.renderer
 
-    if (_a) then
-        _a:setRenderTarget(self.props.output)
-    end
+    if (renderer) then
+        renderer:setRenderTarget(self.props.output)
+        renderer:render(self.scene, self.camera)
+        renderer:setRenderTarget(nil)
 
-    if (_b) then
-        _b:render(self.scene, self.camera)
-    end
-
-    if (_b) then
-        _c:setRenderTarget(nil)
+        print("Advection:updateAdvection()")
     end
 end
 

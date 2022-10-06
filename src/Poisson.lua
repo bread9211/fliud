@@ -68,21 +68,18 @@ function Poisson:updatePoisson(_a1)
         local isOdd = (i % 2) == 0
         p_in = isOdd and self.props.output0 or self.props.output1
         p_out = isOdd and self.props.output1 or self.props.output0
+        print(self.props.output0)
         self.uniforms.pressure.value = p_in.texture
         self.props.output = p_out
 
-        local _a, _b, _c = Common.renderer, Common.renderer, Common.renderer
+        local renderer = Common.renderer
 
-        if not (_a) then
-            _a:setRenderTarget(self.props.output)
-        end
+        if (renderer) then
+            renderer:setRenderTarget(self.props.output)
+            renderer:render(self.scene, self.camera)
+            renderer:setRenderTarget(nil)
 
-        if not (_b) then
-            _b:render(self.scene, self.camera)
-        end
-
-        if not (_b) then
-            _c:setRenderTarget(nil)
+            print("Poisson:updatePoisson()")
         end
     end
     

@@ -1,6 +1,8 @@
 local window = js.global
 local THREE = window.THREE
 
+local Common = require("src.Common")
+
 local Scene = THREE.Scene
 local Camera = THREE.Camera
 local RawShaderMaterial = THREE.RawShaderMaterial
@@ -65,10 +67,10 @@ function Viscous:new(simProps)
     return setmetatable(self, ViscousMT)
 end
 
-function Viscous:updateViscous(_a)
-    local viscous = _a.viscous
-    local iterations = _a.iterations
-    local dt = _a.dt
+function Viscous:updateViscous(_a1)
+    local viscous = _a1.viscous
+    local iterations = _a1.iterations
+    local dt = _a1.dt
     local exportedFboOut = (iterations - 1) % 2 == 0 and self.props.output1 or self.props.output0
     if (self.uniforms) then
         self.uniforms.v.value = viscous
@@ -84,9 +86,19 @@ function Viscous:updateViscous(_a)
         if (fbo_in and self.uniforms) then
             self.uniforms.dt.value = dt
         end
-        self:update()
+
+        local renderer = Common.renderer
+
+        if (renderer) then
+            renderer:setRenderTarget(self.props.output)
+            renderer:render(self.scene, self.camera)
+            renderer:setRenderTarget(nil)
+
+            print("Viscous:updateViscous()")
+        end
     end
     return exportedFboOut
 end
 
+print("Viscous.lua initialized")
 return Viscous

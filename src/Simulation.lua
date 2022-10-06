@@ -117,7 +117,7 @@ function Simulation:update()
         mouse_force = self.options.mouse_force,
         cellScale = self.cellScale,
     })
-    local vel = self.option.isViscous and self.fbos.vel_1 or self.viscous:updateViscous({
+    local vel = self.options.isViscous and self.fbos.vel_1 or self.viscous:updateViscous({
         viscous = self.options.viscous,
         iterations = self.options.iterations_viscous,
         dt = self.options.dt,

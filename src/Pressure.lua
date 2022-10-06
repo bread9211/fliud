@@ -66,19 +66,17 @@ function Pressure:updatePressure(_a1)
     local pressure = _a1.pressure
     self.uniforms.velocity.value = vel.texture
     self.uniforms.pressure.value = pressure.texture
-    local _a, _b, _c = Common.renderer, Common.renderer, Common.renderer
 
-    if not (_a) then
-        _a:setRenderTarget(self.props.output)
-    end
+    local renderer = Common.renderer
 
-    if not (_b) then
-        _b:render(self.scene, self.camera)
-    end
+    if (renderer) then
+        renderer:setRenderTarget(self.props.output)
+        renderer:render(self.scene, self.camera)
+        renderer:setRenderTarget(nil)
 
-    if not (_b) then
-        _c:setRenderTarget(nil)
+        print("Pressure:updatePressure()")
     end
 end
 
+print("Pressure.lua initialized")
 return Pressure

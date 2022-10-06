@@ -8700,11 +8700,6 @@
 			this.glslVersion = null;
 
 			if (parameters !== undefined) {
-				var a = [];
-				for (const i in parameters) {
-					console.log(i);
-					// a.push(parameters.get())
-				}
 				this.setValues(parameters);
 			}
 		}
@@ -19755,7 +19750,10 @@
 				_canvas.style.height = height + 'px';
 			}
 
-			this.setViewport(0, 0, width, height);
+			// this.setViewport(0, 0, width, height);
+			_viewport.set(0, 0, width, height);
+
+			state.viewport(_currentViewport.copy(_viewport).multiplyScalar(_pixelRatio).floor())
 		};
 
 		this.getDrawingBufferSize = function (target) {

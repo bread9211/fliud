@@ -1,6 +1,6 @@
 local window = js.global
 
-local Common = require("src.Common"):new()
+local Common = require("src.Common")
 local Output = require("src.Output")
 local Mouse = require("src.Mouse")
 
@@ -36,7 +36,9 @@ end
 
 function WebGL:loop()
     self:render()
-    window:requestAnimationFrame(self:loop())
+    window:requestAnimationFrame(function ()
+        self:loop()
+    end)
 end
 
 print("WebGL.lua initialized")

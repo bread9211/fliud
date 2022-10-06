@@ -67,7 +67,7 @@ function ExternalForce:new(simProps)
     --     print(i, v)
     -- end
     -- print("test")
-    local mouseM = js.new(RawShaderMaterial, params)
+    local mouseM = js.new(RawShaderMaterial, Object(params))
 
     self.mouse = js.new(Mesh, mouseG, mouseM)
     self.scene:add(self.mouse)
@@ -85,27 +85,23 @@ function ExternalForce:updateExternalForce(props)
 
     -- print(self)
     local uniforms = self.mouse.material.uniforms
-    for i, v in pairs(self.mouse.material) do
-        if (i == "uniforms") then
-            print(#v)
-        end
-    end
+    -- for i, v in pairs(self.mouse.material) do
+    --     if (i == "uniforms") then
+    --         print(#v)
+    --     end
+    -- end
     uniforms.force.value:set(forceX, forceY)
     uniforms.center.value:set(centerX, centerY)
     uniforms.scale.value:set(props.cursor_size, props.cursor_size)
 
-    local _a, _b, _c = Common.renderer, Common.renderer, Common.renderer
+    local renderer = Common.renderer
 
-    if not (_a) then
-        _a:setRenderTarget(self.props.output)
-    end
+    if (renderer) then
+        renderer:setRenderTarget(self.props.output)
+        renderer:render(self.scene, self.camera)
+        renderer:setRenderTarget(nil)
 
-    if not (_b) then
-        _b:render(self.scene, self.camera)
-    end
-
-    if not (_b) then
-        _c:setRenderTarget(nil)
+        print("ExternalForceFrag:updateExternalForce()")
     end
 end
 

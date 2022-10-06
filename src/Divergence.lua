@@ -64,18 +64,14 @@ function Divergence:updateDivergence(_a)
         self.uniforms.velocity.value = vel.texture;
     end
     
-    local _a, _b, _c = Common.renderer, Common.renderer, Common.renderer
+    local renderer = Common.renderer
 
-    if not (_a) then
-        _a:setRenderTarget(self.props.output)
-    end
+    if (renderer) then
+        renderer:setRenderTarget(self.props.output)
+        renderer:render(self.scene, self.camera)
+        renderer:setRenderTarget(nil)
 
-    if not (_b) then
-        _b:render(self.scene, self.camera)
-    end
-
-    if not (_b) then
-        _c:setRenderTarget(nil)
+        print("Divergence:updateDivergence()")
     end
 end
 

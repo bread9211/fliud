@@ -5,6 +5,7 @@ local Common = require("src.Common")
 local Simulation = require("src.Simulation")
 
 local get = require("utils.shaders")
+local Object = require("utils.convertToJSObject")
 local FaceVert = get("face.vert")
 local ColorFrag = get("color.frag")
 
@@ -26,7 +27,7 @@ function Output:new()
     self.simulation = Simulation:new()
     self.scene = js.new(Scene)
     self.camera = js.new(Camera)
-    self.output = js.new(Mesh, js.new(PlaneBufferGeometry, 2, 2), js.new(RawShaderMaterial, {
+    self.output = js.new(Mesh, js.new(PlaneBufferGeometry, 2, 2), js.new(RawShaderMaterial, Object({
         vertexShader = FaceVert,
         fragmentShader = ColorFrag,
         uniforms = {
@@ -37,7 +38,7 @@ function Output:new()
                 value = js.new(Vector2),
             },
         },
-    }))
+    })))
     self.scene:add(self.output)
 
     print("Generated output")
