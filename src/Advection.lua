@@ -111,13 +111,10 @@ function Advection:updateAdvection(_a1)
 
     if (renderer) then
         renderer:setRenderTarget(self.props.output)
-        print(Common.renderer._currentRenderTarget)
-        print("....")
-        print(self.props.output.isXRRenderTarget)
         renderer:render(self.scene, self.camera)
         renderer:setRenderTarget(nil)
 
-        print("Advection:updateAdvection()")
+        -- print("Advection:updateAdvection()")
     end
 end
 

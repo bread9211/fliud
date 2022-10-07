@@ -41,7 +41,7 @@ function Poisson:new(simProps)
         },
         output = simProps.dst,
         output0 = simProps.dst_,
-        output1 = simProps.dst
+        output1 = simProps.dst,
     }
 
     local _a = self.props.material
@@ -65,10 +65,9 @@ function Poisson:updatePoisson(_a1)
     local iterations = _a1.iterations
     local p_in, p_out
     for i = 0, iterations, 1 do
-        local isOdd = (i % 2) == 0
-        p_in = isOdd and self.props.output0 or self.props.output1
-        p_out = isOdd and self.props.output1 or self.props.output0
-        print(self.props.output0)
+        local isOdd = ((i % 2) == 0)
+        p_in = (isOdd and self.props.output0) or self.props.output1
+        p_out = (isOdd and self.props.output1) or self.props.output0
         self.uniforms.pressure.value = p_in.texture
         self.props.output = p_out
 
@@ -79,7 +78,7 @@ function Poisson:updatePoisson(_a1)
             renderer:render(self.scene, self.camera)
             renderer:setRenderTarget(nil)
 
-            print("Poisson:updatePoisson()")
+            -- print("Poisson:updatePoisson()")
         end
     end
     

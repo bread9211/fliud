@@ -74,7 +74,7 @@ function Pressure:updatePressure(_a1)
         renderer:render(self.scene, self.camera)
         renderer:setRenderTarget(nil)
 
-        print("Pressure:updatePressure()")
+        -- print("Pressure:updatePressure()")
     end
 end
 

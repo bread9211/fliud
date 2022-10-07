@@ -7,7 +7,7 @@ local o = WebGL:new(window.document)
 o:loop()
 o:resize()
 window:addEventListener("resize", function ()
-    WebGL:resize()
+    o:resize()
 end)
 
 print("main.lua initialized")

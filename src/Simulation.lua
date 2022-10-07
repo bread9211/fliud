@@ -82,7 +82,7 @@ function Simulation:new()
         cellScale = self.cellScale,
         boundarySpace = self.boundarySpace,
         src = self.fbos.div,
-        dst = self.fbos.pressure,
+        dst = self.fbos.pressure_1,
         dst_ = self.fbos.pressure_0,
     })
     self.pressure = Pressure:new({

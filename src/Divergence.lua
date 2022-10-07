@@ -71,7 +71,7 @@ function Divergence:updateDivergence(_a)
         renderer:render(self.scene, self.camera)
         renderer:setRenderTarget(nil)
 
-        print("Divergence:updateDivergence()")
+        -- print("Divergence:updateDivergence()")
     end
 end
 

@@ -94,7 +94,7 @@ function Viscous:updateViscous(_a1)
             renderer:render(self.scene, self.camera)
             renderer:setRenderTarget(nil)
 
-            print("Viscous:updateViscous()")
+            -- print("Viscous:updateViscous()")
         end
     end
     return exportedFboOut

@@ -1,4 +1,5 @@
 local window = js.global
+local THREE = window.THREE
 
 local Common = require("src.Common")
 local Output = require("src.Output")

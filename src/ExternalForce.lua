@@ -47,7 +47,7 @@ function ExternalForce:new(simProps)
         vertexShader = MouseVert,
         fragmentShader = ExternalForceFrag,
         blending = AdditiveBlending,
-        uniforms = Object({
+        uniforms = {
             px = {
                 value = simProps.cellScale,
             },
@@ -60,7 +60,7 @@ function ExternalForce:new(simProps)
             scale = {
                 value = js.new(Vector2, simProps.cursor_size, simProps.cursor_size),
             },
-        })
+        }
     }
     -- print(params.uniforms.force.value)
     -- for i, v in pairs(params) do
@@ -101,7 +101,7 @@ function ExternalForce:updateExternalForce(props)
         renderer:render(self.scene, self.camera)
         renderer:setRenderTarget(nil)
 
-        print("ExternalForceFrag:updateExternalForce()")
+        -- print("ExternalForce:updateExternalForce()")
     end
 end
 
