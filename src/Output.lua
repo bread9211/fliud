@@ -12,7 +12,7 @@ local ColorFrag = get("color.frag")
 local Scene = THREE.Scene
 local Camera = THREE.Camera
 local Mesh = THREE.Mesh
-local PlaneBufferGeometry = THREE.PlaneBufferGeometry
+local PlaneGeometry = THREE.PlaneGeometry
 local RawShaderMaterial = THREE.RawShaderMaterial
 local Vector2 = THREE.Vector2
 
@@ -27,7 +27,7 @@ function Output:new()
     self.simulation = Simulation:new()
     self.scene = js.new(Scene)
     self.camera = js.new(Camera)
-    self.output = js.new(Mesh, js.new(PlaneBufferGeometry, 2, 2), js.new(RawShaderMaterial, Object({
+    self.output = js.new(Mesh, js.new(PlaneGeometry, 2, 2), js.new(RawShaderMaterial, Object({
         vertexShader = FaceVert,
         fragmentShader = ColorFrag,
         uniforms = {

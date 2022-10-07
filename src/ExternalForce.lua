@@ -10,7 +10,7 @@ local Object = require("utils.convertToJSObject")
 local MouseVert = get("mouse.vert")
 local ExternalForceFrag = get("externalForce.frag")
 
-local PlaneBufferGeometry = THREE.PlaneBufferGeometry
+-- local PlaneBufferGeometry = THREE.PlaneBufferGeometry
 local AdditiveBlending = THREE.AdditiveBlending
 local Vector2 = THREE.Vector2
 local Scene = THREE.Scene
@@ -41,7 +41,7 @@ function ExternalForce:new(simProps)
         self.scene:add(self.plane)
     end
 
-    local mouseG = js.new(PlaneBufferGeometry, 1, 1)
+    local mouseG = js.new(PlaneGeometry, 1, 1)
 
     local params = {
         vertexShader = MouseVert,

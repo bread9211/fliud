@@ -1,5 +1,5 @@
 local window = js.global
-local THREE = window.THREE
+-- local THREE = window.THREE
 
 local Common = require("src.Common")
 local Output = require("src.Output")
@@ -11,10 +11,10 @@ local WebGLMT = {__index = WebGL}
 function WebGL:new(_a)
     local self = {}
     
-    self.wrapper = _a
+    self.wrapper = _a.wrapper
     Common:init()
     Mouse:init()
-    -- self.wrapper:prepend(Common.renderer.DOMElement)
+    self.wrapper:prepend(Common.renderer.domElement)
     self.output = Output:new()
 
     return setmetatable(self, WebGLMT)

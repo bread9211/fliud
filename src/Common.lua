@@ -1,6 +1,8 @@
 local window = js.global
-
 local THREE = js.global.THREE
+
+local Object = require("utils.convertToJSObject")
+
 local WebGLRenderer = THREE.WebGLRenderer
 local Clock = THREE.Clock
 
@@ -27,7 +29,7 @@ end
 function Common:init()
     self.pixelRatio = window.devicePixelRatio
     self:resize()
-    self.renderer = js.new(WebGLRenderer, {
+    self.renderer = js.new(WebGLRenderer, Object{
         antialias = true,
         alpha = true,
     })
