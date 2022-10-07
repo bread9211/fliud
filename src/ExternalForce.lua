@@ -6,7 +6,6 @@ local Object = require("utils.convertToJSObject")
 
 local Mouse = require("src.Mouse")
 local get = require("utils.shaders")
-local Object = require("utils.convertToJSObject")
 local MouseVert = get("mouse.vert")
 local ExternalForceFrag = get("externalForce.frag")
 
@@ -97,9 +96,10 @@ function ExternalForce:updateExternalForce(props)
     local renderer = Common.renderer
 
     if (renderer) then
-        renderer:setRenderTarget(self.props.output)
+        renderer.setRenderTarget(self.props.output)
+        print(self.props.output)
         renderer:render(self.scene, self.camera)
-        renderer:setRenderTarget(nil)
+        renderer.setRenderTarget(nil)
 
         -- print("ExternalForce:updateExternalForce()")
     end

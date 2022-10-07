@@ -2,6 +2,7 @@ local window = js.global
 local dat = window.dat
 
 local GUI = dat.GUI
+local Object = require("utils.convertToJSObject")
 
 local Controls = {}
 local ControlsMT = {__index = Controls}
@@ -15,7 +16,7 @@ function Controls:new(params)
 end
 
 function Controls:init()
-    self.gui = js.new(GUI, { width = 300 })
+    self.gui = js.new(GUI, Object({width = 300 }))
     self.gui = self.gui.addFolder("Controls")
     self.gui.add(self.params, "mouse_force", 20, 200)
     self.gui.add(self.params, "cursor_size", 10, 200)

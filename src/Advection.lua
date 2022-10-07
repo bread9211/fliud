@@ -83,11 +83,11 @@ function Advection:initAdvection()
         1, -1, 0, -1, -1, 0,
     }
     boundaryG:setAttribute("position", js.new(BufferAttribute, vertices_boundary, 3))
-    local boundaryM = js.new(RawShaderMaterial, {
+    local boundaryM = js.new(RawShaderMaterial, Object({
         vertexShader = LineVert,
         fragmentShader = AdvectionFrag,
         uniforms = self.uniforms,
-    })
+    }))
     self.line = js.new(LineSegments, boundaryG, boundaryM)
 
     _a = self.scene
@@ -110,9 +110,10 @@ function Advection:updateAdvection(_a1)
     local renderer = Common.renderer
 
     if (renderer) then
-        renderer:setRenderTarget(self.props.output)
+        renderer.setRenderTarget(self.props.output)
+        print(self.props.output)
         renderer:render(self.scene, self.camera)
-        renderer:setRenderTarget(nil)
+        renderer.setRenderTarget(nil)
 
         -- print("Advection:updateAdvection()")
     end
