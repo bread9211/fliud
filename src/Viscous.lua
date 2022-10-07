@@ -91,7 +91,7 @@ function Viscous:updateViscous(_a1)
 
         if (renderer) then
             renderer.setRenderTarget(self.props.output)
-            print(self.props.output)
+            -- print(self.props.output)
             renderer:render(self.scene, self.camera)
             renderer.setRenderTarget(nil)
 

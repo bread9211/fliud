@@ -24,7 +24,7 @@ local ExternalForceMT = {__index = ExternalForce}
 function ExternalForce:new(simProps)
     local self = {}
 
-    self.props = simProps
+    self.props = {output = simProps.dst}
 
     local _a = self.props.material
     if (_a) then
@@ -97,7 +97,7 @@ function ExternalForce:updateExternalForce(props)
 
     if (renderer) then
         renderer.setRenderTarget(self.props.output)
-        print(self.props.output)
+        -- print(self.props.output)
         renderer:render(self.scene, self.camera)
         renderer.setRenderTarget(nil)
 

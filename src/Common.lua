@@ -42,8 +42,8 @@ function Common:init()
 end
 
 function Common:resize()
-    self.width = window.innerWidth
-    self.height = window.innerHeight
+    self.width = window.parseInt(window.innerWidth)
+    self.height = window.parseInt(window.innerHeight)
     self.aspect = self.width/self.height
     if (self.renderer) then
         self.renderer:setSize(self.width,self.height)
