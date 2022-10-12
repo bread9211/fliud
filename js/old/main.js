@@ -1,6 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-import WebGL_1 from "./js/WebGL.js";
-new WebGL_1({
-    $wrapper: document.body,
+import EventBus from "./utils/EventBus";
+window.EventBus = EventBus;
+import WebGL from "./modules/WebGL";
+
+
+if(!window.isDev) window.isDev = false;
+
+const webglMng = new WebGL({
+    $wrapper: document.body
 });

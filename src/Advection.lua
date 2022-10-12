@@ -110,10 +110,10 @@ function Advection:updateAdvection(_a1)
     local renderer = Common.renderer
 
     if (renderer) then
-        renderer.setRenderTarget(self.props.output)
+        renderer:setRenderTarget(self.props.output)
         -- print(self.props.output)
         renderer:render(self.scene, self.camera)
-        renderer.setRenderTarget(nil)
+        renderer:setRenderTarget(nil)
 
         -- print("Advection:updateAdvection()")
     end

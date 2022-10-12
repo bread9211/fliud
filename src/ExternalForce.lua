@@ -96,10 +96,10 @@ function ExternalForce:updateExternalForce(props)
     local renderer = Common.renderer
 
     if (renderer) then
-        renderer.setRenderTarget(self.props.output)
+        renderer:setRenderTarget(self.props.output)
         -- print(self.props.output)
         renderer:render(self.scene, self.camera)
-        renderer.setRenderTarget(nil)
+        renderer:setRenderTarget(nil)
 
         -- print("ExternalForce:updateExternalForce()")
     end

@@ -1,119 +1,87 @@
-"use strict";
+import face_vert from "./glsl/sim/face.vert";
+import line_vert from "./glsl/sim/line.vert";
 
-var __extends = (this && this.__extends) || (function() {
-	var extendStatics = function(d, b) {
-		extendStatics = Object.setPrototypeOf ||
-			({
-					__proto__: []
-				} instanceof Array && function(d, b) {
-					d.__proto__ = b;
-				}) ||
-			function(d, b) {
-				for (var p in b)
-					if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
-			};
-		return extendStatics(d, b);
-	};
-	return function(d, b) {
-		if (typeof b !== "function" && b !== null)
-			throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-		extendStatics(d, b);
+import advection_frag from "./glsl/sim/advection.frag";
+import ShaderPass from "./ShaderPass";
 
-		function __() {
-			this.constructor = d;
-		}
-		d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-})();
+import * as THREE from "three";
 
-Object.defineProperty(exports, "__esModule", { value: true });
 
-// import { BufferGeometry, BufferAttribute, RawShaderMaterial, LineSegments } from "three";
-// var face_vert_raw_1 = require("../shaders/face.vert?raw");
-// var line_vert_raw_1 = require("../shaders/line.vert?raw");
-// var advection_frag_raw_1 = require("../shaders/advection.frag?raw");
-var fr = new FileReader();
-var face_vert_raw_1 = fr.readAsText(new File([], "../shaders/face.vert?raw"));
-fr = new FileReader();
-var line_vert_raw_1 = fr.readAsText(new File([], "../shaders/line.vert?raw"));
-fr = new FileReader();
-var advection_frag_raw_1 = fr.readAsText(new File([], "../shaders/advection.frag?raw"));
-import ShaderPass_1 from "./ShaderPass.js";
-
-var BufferGeometry = THREE.BufferGeometry
-var BufferAttribute = THREE.BufferAttribute
-var RawShaderMaterial = THREE.RawShaderMaterial
-var LineSegments = THREE.LineSegments
-var Advection = /** @class */ (function (_super) {
-    __extends(Advection, _super);
-    class Advection {
-        constructor(simProps) {
-            var _this = _super.call(this, {
-                material: {
-                    vertexShader: face_vert_raw_1,
-                    fragmentShader: advection_frag_raw_1,
-                    uniforms: {
-                        boundarySpace: {
-                            value: simProps.cellScale,
-                        },
-                        px: {
-                            value: simProps.cellScale,
-                        },
-                        fboSize: {
-                            value: simProps.fboSize,
-                        },
-                        velocity: {
-                            value: simProps.src.texture,
-                        },
-                        dt: {
-                            value: simProps.dt,
-                        },
-                        isBFECC: {
-                            value: true,
-                        },
+export default class Advection extends ShaderPass{
+    constructor(simProps){
+        super({
+            material: {
+                vertexShader: face_vert,
+                fragmentShader: advection_frag,
+                uniforms: {
+                    boundarySpace: {
+                        value: simProps.cellScale
                     },
+                    px: {
+                        value: simProps.cellScale
+                    },
+                    fboSize: {
+                        value: simProps.fboSize
+                    },
+                    velocity: {
+                        value: simProps.src.texture
+                    },
+                    dt: {
+                        value: simProps.dt
+                    },
+                    isBFECC: {
+                        value: true
+                    }
                 },
-                output: simProps.dst,
-            }) || this;
-            _this.init();
-            return _this;
-        }
-        init() {
-            _super.prototype.init.call(this);
-            this.createBoundary();
-        }
-        createBoundary() {
-            var _a;
-            var boundaryG = new BufferGeometry();
-            var vertices_boundary = new Float32Array([
-                // left
-                -1, -1, 0, -1, 1, 0,
-                // top
-                -1, 1, 0, 1, 1, 0,
-                // right
-                1, 1, 0, 1, -1, 0,
-                // bottom
-                1, -1, 0, -1, -1, 0,
-            ]);
-            boundaryG.setAttribute("position", new BufferAttribute(vertices_boundary, 3));
-            var boundaryM = new RawShaderMaterial({
-                vertexShader: line_vert_raw_1,
-                fragmentShader: advection_frag_raw_1,
-                uniforms: this.uniforms,
-            });
-            this.line = new LineSegments(boundaryG, boundaryM);
-            (_a = this.scene) === null || _a === void 0 ? void 0 : _a.add(this.line);
-        }
-        updateAdvection(_a) {
-            var dt = _a.dt, isBounce = _a.isBounce, BFECC = _a.BFECC;
-            if (this.uniforms)
-                this.uniforms.dt.value = dt;
-            this.line.visible = isBounce;
-            this.uniforms.isBFECC.value = BFECC;
-            _super.prototype.update.call(this);
-        }
+            },
+            output: simProps.dst
+        });
+
+        this.init();
     }
-    return Advection;
-}(ShaderPass_1));
-const _default = Advection;
-export { _default as default };
+
+    init(){
+        super.init();
+        this.createBoundary();
+    }
+
+    createBoundary(){
+        const boundaryG = new THREE.BufferGeometry();
+        const vertices_boundary = new Float32Array([
+            // left
+            -1, -1, 0,
+            -1, 1, 0,
+
+            // top
+            -1, 1, 0,
+            1, 1, 0,
+
+            // right
+            1, 1, 0,
+            1, -1, 0,
+
+            // bottom
+            1, -1, 0,
+            -1, -1, 0
+        ]);
+        boundaryG.setAttribute( 'position', new THREE.BufferAttribute( vertices_boundary, 3 ) );
+
+        const boundaryM = new THREE.RawShaderMaterial({
+            vertexShader: line_vert,
+            fragmentShader: advection_frag,
+            uniforms: this.uniforms
+        });
+
+        this.line = new THREE.LineSegments(boundaryG, boundaryM);
+        this.scene.add(this.line);
+    }
+
+    update({ dt, isBounce, BFECC }){
+
+        this.uniforms.dt.value = dt;
+        this.line.visible = isBounce;
+        this.uniforms.isBFECC.value = BFECC;
+
+        super.update();
+    }
+}
