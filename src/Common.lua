@@ -1,66 +1,60 @@
 local window = js.global
-local THREE = js.global.THREE
+local document = js.global.document
+local THREE = window.THREE
 
-local Object = require("utils.convertToJSObject")
+local new = require("utils.new")
 
-local WebGLRenderer = THREE.WebGLRenderer
-local Clock = THREE.Clock
-
-local Common = {}
-local CommonMT = {__index  =  Common}
-
-function Common:new()
+return (function ()
     local self = {}
 
-    self.width = 0
-    self.height = 0
-    self.aspect = self.width/self.height
+    self.width = nil
+    self.height = nil
+    self.aspect = self.width / self.height
     self.isMobile = false
     self.breakpoint = 768
-    self.fboWidth = 0
-    self.fboHeight = 0
-    self.resizeFunc = self.resize
+
+    self.fboWidth = nil
+    self.fboHeight = nil
+
+    self.resizeFunc = self.resize.bind(self)
+
     self.time = 0
     self.delta = 0
 
-    return setmetatable(self, CommonMT)
-end
+    self.init = function()
+        self.pixelRatio = window.devicePixelRatio
 
-function Common:init()
-    self.pixelRatio = window.devicePixelRatio
-    self:resize()
-    self.renderer = js.new(WebGLRenderer, Object{
-        antialias = true,
-        alpha = true,
-    })
-    self.renderer.autoClear = false
-    self.renderer:setSize(self.width,self.height)
-    self.renderer:setClearColor(0x000000)
-    self.renderer:setPixelRatio(self.pixelRatio)
-    self.clock = js.new(Clock)
-    self.clock:start()
-end
+        self.resize()
 
-function Common:resize()
-    self.width = window.parseInt(window.innerWidth)
-    self.height = window.parseInt(window.innerHeight)
-    self.aspect = self.width/self.height
-    if (self.renderer) then
-        self.renderer:setSize(self.width,self.height)
-    end
-end
+        self.renderer = new(THREE.WebGLRenderer, {
+            antialias = true,
+            alpha = true,
+        })
 
-function Common:update()
-    local _a = self.clock
+        self.renderer.autoClear = false
 
-    if (_a == nil or _a == 0) then
-        self.delta = nil
-    else
-        self.delta = _a:getDelta()
+        self.renderer.setSize( self.width, self.height )
+
+        self.renderer.setClearColor( 0x000000 )
+
+        self.renderer.setPixelRatio(self.pixelRatio)
+
+        self.clock = new(THREE.Clock)
+        self.clock.start()
     end
 
-    self.time = self.time + self.delta
-end
+    self.resize = function()
+        self.width = window.innerWidth
+        self.height = window.innerHeight
+        self.aspect = self.width / self.height
 
-print("Common.lua initialized")
-return Common:new()
+        if (self.renderer) then self.renderer.setSize(self.width, self.height) end
+    end
+
+    self.update = function()
+        self.delta = self.clock.getDelta()
+        self.time = self.time + self.delta
+    end
+
+    return self
+end)()
