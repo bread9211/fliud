@@ -1,89 +1,56 @@
-local window = js.global
-local THREE = window.THREE
-
-local Common = require("src.Common")
-
 local get = require("utils.shaders")
-local Object = require("utils.convertToJSObject")
-local FaceVert = get("face.vert")
-local PoissonFrag = get("poisson.frag")
+local face_vert = get("face.vert")
+local poisson_frag = get("poisson.frag")
 
-local Scene = THREE.Scene
-local Camera = THREE.Camera
-local RawShaderMaterial = THREE.RawShaderMaterial
-local PlaneGeometry = THREE.PlaneGeometry
-local Mesh = THREE.Mesh
+local ShaderPass = require("src.ShaderPass")
 
-local Poisson = {}
-local PoissonMT = {__index = Poisson}
-
-function Poisson:new(simProps)
-    local self = {}
-
-    self.props = {
+return function(simulationProperties)
+    local self = ShaderPass({
         material = {
-            vertexShader = FaceVert,
-            fragmentShader = PoissonFrag,
+            vertexShader = face_vert,
+            fragmentShader = poisson_frag,
             uniforms = {
                 boundarySpace = {
-                    value = simProps.boundarySpace,
+                    value = simulationProperties.boundarySpace
                 },
                 pressure = {
-                    value = simProps.dst_.texture,
+                    value = simulationProperties.dst_.texture
                 },
                 divergence = {
-                    value = simProps.src.texture,
+                    value = simulationProperties.src.texture
                 },
                 px = {
-                    value = simProps.cellScale,
-                },
+                    value = simulationProperties.cellScale
+                }
             },
         },
-        output = simProps.dst,
-        output0 = simProps.dst_,
-        output1 = simProps.dst,
-    }
+        output = simulationProperties.dst,
 
-    local _a = self.props.material
-    if (_a) then
-        self.uniforms = _a.uniforms
-    end
+        output0 = simulationProperties.dst_,
+        output1 = simulationProperties.dst
+    })
 
-    self.scene = js.new(Scene)
-    self.camera = js.new(Camera)
-    if (self.uniforms) then
-        self.material = js.new(RawShaderMaterial, Object(self.props.material))
-        self.geometry = js.new(PlaneGeometry, 2.0, 2.0)
-        self.plane = js.new(Mesh, self.geometry, self.material)
-        self.scene:add(self.plane)
-    end
+    self.init()
 
-    return setmetatable(self, PoissonMT)
-end
+    self.update = function(iterations)
+        local p_in, p_out
 
-function Poisson:updatePoisson(_a1)
-    local iterations = _a1.iterations
-    local p_in, p_out
-    for i = 0, iterations, 1 do
-        local isOdd = ((i % 2) == 0)
-        p_in = (isOdd and self.props.output0) or self.props.output1
-        p_out = (isOdd and self.props.output1) or self.props.output0
-        self.uniforms.pressure.value = p_in.texture
-        self.props.output = p_out
+        for i = 0, #iterations, 1 do
+            if(i % 2 == 0) then
+                p_in = self.props.output0
+                p_out = self.props.output1
+            else
+                p_in = self.props.output1
+                p_out = self.props.output0
+            end
 
-        local renderer = Common.renderer
-
-        if (renderer) then
-            renderer:setRenderTarget(self.props.output)
-            -- print(self.props.output)
-            renderer:render(self.scene, self.camera)
-            renderer:setRenderTarget(nil)
-
-            -- print("Poisson:updatePoisson()")
+            self.uniforms.pressure.value = p_in.texture
+            self.props.output = p_out
+            self._update()
         end
-    end
-    
-    return p_out
-end
 
-return Poisson
+        return p_out
+    end
+
+    return self
+end

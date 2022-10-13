@@ -1,67 +1,56 @@
-local window = js.global
-local THREE = window.THREE
-
 local Common = require("src.Common")
+local THREE = js.global.THREE
+
 local Simulation = require("src.Simulation")
-
-local get = require("utils.shaders")
 local Object = require("utils.convertToJSObject")
-local FaceVert = get("face.vert")
-local ColorFrag = get("color.frag")
+local new = require("utils.new")
+local get = require("utils.shaders")
+local face_vert = get("face.vert")
+local color_frag = get("color.frag")
 
-local Scene = THREE.Scene
-local Camera = THREE.Camera
-local Mesh = THREE.Mesh
-local PlaneGeometry = THREE.PlaneGeometry
-local RawShaderMaterial = THREE.RawShaderMaterial
-local Vector2 = THREE.Vector2
-
-local Output = {}
-local OutputMT = {__index = Output}
-
-function Output:new()
-    print("Generating output...")
-
+return function()
     local self = {}
 
-    self.simulation = Simulation:new()
-    self.scene = js.new(Scene)
-    self.camera = js.new(Camera)
-    self.output = js.new(Mesh, js.new(PlaneGeometry, 2, 2), js.new(RawShaderMaterial, Object({
-        vertexShader = FaceVert,
-        fragmentShader = ColorFrag,
-        uniforms = {
-            velocity = {
-                value = self.simulation.fbos.vel_0.texture,
-            },
-            boundarySpace = {
-                value = js.new(Vector2),
-            },
-        },
-    })))
-    self.scene:add(self.output)
+    self.simulation = new(Simulation)
 
-    print("Generated output")
-    return setmetatable(self, OutputMT)
+    self.scene = new THREE.Scene()
+    self.camera = new THREE.Camera()
+
+    self.output = new(THREE.Mesh,
+        new(THREE.PlaneBufferGeometry2, 2),
+        new(THREE.RawShaderMaterial, Object({
+            vertexShader = face_vert,
+            fragmentShader = color_frag,
+            uniforms = {
+                velocity = {
+                    value = self.simulation.fbos.vel_0.texture
+                },
+                boundarySpace = {
+                    value = new(THREE.Vector2)
+                }
+            }
+        }))
+    )
+
+    self.scene.add(self.output)
+
+    self.addScene = function(mesh)
+        self.scene.add(mesh)
+    end
+
+    self.resize = function()
+        self.simulation.resize()
+    end
+
+    self.render = function()
+        Common.renderer.setRenderTarget(nil)
+        Common.renderer.render(self.scene, self.camera)
+    end
+
+    self.update = function()
+        self.simulation.update()
+        self.render()
+    end
+
+    return self
 end
-
-function Output:addScene(mesh)
-    self.simulation:add(mesh)
-end
-
-function Output:resize()
-    self.simulation:resize();
-end
-
-function Output:render()
-    Common.renderer:setRenderTarget(nil);
-    Common.renderer:render(self.scene, self.camera);
-end
-
-function Output:update()
-    self.simulation:update();
-    self:render();
-end
-
-print("Output.lua initialized")
-return Output;

@@ -1,109 +1,63 @@
-local window = js.global
-local THREE = window.THREE
+local get = require("utils.new")
+local mouse_vert = get("mouse.vert")
+local externalForce_frag = get("externalForce.frag")
 
-local Common = require("src.Common")
+local ShaderPass = require("src.ShaderPass")
+local new = require("utils.new")
 local Object = require("utils.convertToJSObject")
-
 local Mouse = require("src.Mouse")
-local get = require("utils.shaders")
-local MouseVert = get("mouse.vert")
-local ExternalForceFrag = get("externalForce.frag")
 
--- local PlaneBufferGeometry = THREE.PlaneBufferGeometry
-local AdditiveBlending = THREE.AdditiveBlending
-local Vector2 = THREE.Vector2
-local Scene = THREE.Scene
-local Camera = THREE.Camera
-local RawShaderMaterial = THREE.RawShaderMaterial
-local PlaneGeometry = THREE.PlaneGeometry
-local Mesh = THREE.Mesh
+local THREE = js.global.THREE
 
-local ExternalForce = {}
-local ExternalForceMT = {__index = ExternalForce}
+return function(simulationProperties)
+    local self = ShaderPass(Object({
+        output = simulationProperties.dst
+    }))
 
-function ExternalForce:new(simProps)
-    local self = {}
+    self.init()
+    local mouseG = new(THREE.PlaneBufferGeometry, 1, 1)
 
-    self.props = {output = simProps.dst}
-
-    local _a = self.props.material
-    if (_a) then
-        self.uniforms = _a.uniforms
-    end
-
-    self.scene = js.new(Scene)
-    self.camera = js.new(Camera)
-    if (self.uniforms) then
-        self.material = js.new(RawShaderMaterial, Object(self.props.material))
-        self.geometry = js.new(PlaneGeometry, 2.0, 2.0)
-        self.plane = js.new(Mesh, self.geometry, self.material)
-        self.scene:add(self.plane)
-    end
-
-    local mouseG = js.new(PlaneGeometry, 1, 1)
-
-    local params = {
-        vertexShader = MouseVert,
-        fragmentShader = ExternalForceFrag,
-        blending = AdditiveBlending,
+    local mouseM = new(THREE.RawShaderMaterial, Object({
+        vertexShader = mouse_vert,
+        fragmentShader = externalForce_frag,
+        blending = THREE.AdditiveBlending,
         uniforms = {
             px = {
-                value = simProps.cellScale,
+                value = simulationProperties.cellScale
             },
             force = {
-                value = js.new(Vector2, 0.0, 0.0),
+                value = new(THREE.Vector2, 0.0, 0.0)
             },
             center = {
-                value = js.new(Vector2, 0.0, 0.0),
+                value = new(THREE.Vector2, 0.0, 0.0)
             },
             scale = {
-                value = js.new(Vector2, simProps.cursor_size, simProps.cursor_size),
-            },
-        }
-    }
-    -- print(params.uniforms.force.value)
-    -- for i, v in pairs(params) do
-    --     print(i, v)
-    -- end
-    -- print("test")
-    local mouseM = js.new(RawShaderMaterial, Object(params))
+                value = new(THREE.Vector2, simulationProperties.cursor_size, simulationProperties.cursor_size)
+            }
+        },
+    }))
 
-    self.mouse = js.new(Mesh, mouseG, mouseM)
-    self.scene:add(self.mouse)
+    self.mouse = new(THREE.Mesh, mouseG, mouseM)
+    self.scene.add(self.mouse)
 
-    return setmetatable(self, ExternalForceMT)
-end
+    self.update = function(properties)
+        local forceX = Mouse.diff.x / 2 * properties.mouse_force
+        local forceY = Mouse.diff.y / 2 * properties.mouse_force
 
-function ExternalForce:updateExternalForce(props)
-    local forceX = (Mouse.diff.x / 2) * props.mouse_force
-    local forceY = (Mouse.diff.y / 2) * props.mouse_force
-    local cursorSizeX = props.cursor_size * props.cellScale.x
-    local cursorSizeY = props.cursor_size * props.cellScale.y
-    local centerX = math.min(math.max(Mouse.coords.x, -1 + cursorSizeX + props.cellScale.x * 2), 1 - cursorSizeX - props.cellScale.x * 2)
-    local centerY = math.min(math.max(Mouse.coords.y, -1 + cursorSizeY + props.cellScale.y * 2), 1 - cursorSizeY - props.cellScale.y * 2)
+        local cursorSizeX = properties.cursor_size * properties.cellScale.x
+        local cursorSizeY = properties.cursor_size * properties.cellScale.y
 
-    -- print(self)
-    local uniforms = self.mouse.material.uniforms
-    -- for i, v in pairs(self.mouse.material) do
-    --     if (i == "uniforms") then
-    --         print(#v)
-    --     end
-    -- end
-    uniforms.force.value:set(forceX, forceY)
-    uniforms.center.value:set(centerX, centerY)
-    uniforms.scale.value:set(props.cursor_size, props.cursor_size)
+        local centerX = math.min(math.max(Mouse.coords.x, -1 + cursorSizeX + properties.cellScale.x * 2), 1 - cursorSizeX - properties.cellScale.x * 2)
+        local centerY = math.min(math.max(Mouse.coords.y, -1 + cursorSizeY + properties.cellScale.y * 2), 1 - cursorSizeY - properties.cellScale.y * 2)
 
-    local renderer = Common.renderer
+        local uniforms = self.mouse.material.uniforms
 
-    if (renderer) then
-        renderer:setRenderTarget(self.props.output)
-        -- print(self.props.output)
-        renderer:render(self.scene, self.camera)
-        renderer:setRenderTarget(nil)
+        uniforms.force.value.set(forceX, forceY)
+        uniforms.center.value.set(centerX, centerY)
+        uniforms.scale.value.set(properties.cursor_size, properties.cursor_size)
 
-        -- print("ExternalForce:updateExternalForce()")
+        self._update()
     end
-end
 
-print("ExternalForce.lua initialized")
-return ExternalForce
+    return self
+end

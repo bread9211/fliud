@@ -1,5 +1,6 @@
 local Common = require("src.Common")
 local new = require("utils.new")
+local Object = require("utils.convertToJSObject")
 local THREE = js.global.THREE
 
 return function (properties)
@@ -16,7 +17,7 @@ return function (properties)
         self.camera = new(THREE.Camera)
 
         if (self.uniforms) then
-            self.material = new(THREE.RawShaderMaterial, self.properties.material)
+            self.material = new(THREE.RawShaderMaterial, Object(self.properties.material))
             self.geometry = new(THREE.PlaneBufferGeometry, 2.0, 2.0)
             self.plane = new(THREE.Mesh, self.geometry, self.material)
             self.scene.add(self.plane)

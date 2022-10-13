@@ -1,46 +1,39 @@
-local window = js.global
--- local THREE = window.THREE
-
 local Common = require("src.Common")
 local Output = require("src.Output")
 local Mouse = require("src.Mouse")
 
-local WebGL = {}
-local WebGLMT = {__index = WebGL}
+local window = js.global
 
-function WebGL:new(_a)
+return function(properties)
     local self = {}
-    
-    self.wrapper = _a.wrapper
-    Common:init()
-    Mouse:init()
-    self.wrapper:prepend(Common.renderer.domElement)
-    self.output = Output:new()
+    self.properties = properties
 
-    return setmetatable(self, WebGLMT)
+    Common.init()
+    Mouse.init()
+
+    self.init()
+    self.loop()
+
+    window:addEventListener("resize", self.resize)
+
+    self.init = function()
+        self.properties.wrapper.prepend(Common.renderer.domElement)
+        self.output = Output()
+    end
+
+    self.resize = function()
+        Common.resize()
+        self.output.resize()
+    end
+
+    self.render = function()
+        Mouse.update()
+        Common.update()
+        self.output.update()
+    end
+
+    self.loop = function()
+        self.render()
+        window:requestAnimationFrame(self.loop)
+    end
 end
-
-function WebGL:resize()
-    Common:resize()
-    self.output:resize()
-end
-
-function WebGL:render()
-    Mouse:update()
-    Common:update()
-    -- for i, v in ipairs(self) do
-    --     print(type(v))
-    --     print("lmao")
-    -- end
-    self.output:update()
-end
-
-function WebGL:loop()
-    self:render()
-    window:requestAnimationFrame(function ()
-        self:loop()
-    end)
-end
-
-print("WebGL.lua initialized")
-return WebGL

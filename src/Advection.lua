@@ -1,46 +1,47 @@
 local get = require("utils.shaders")
-local face_vert = get("./glsl/sim/face.vert")
-local line_vert = get("./glsl/sim/line.vert")
-local advection_frag = get("./glsl/sim/advection.frag")
+local face_vert = get("face.vert")
+local line_vert = get("line.vert")
+local advection_frag = get("advection.frag")
 
 local ShaderPass = require("src.ShaderPass")
 local new = require("utils.new")
+local Object = require("utils.convertToJSObject")
 
 local THREE = js.global.THREE
 
-return function(simProps)
-    local self = ShaderPass({
-        material =  {
+return function(simulationProperties)
+    local self = ShaderPass(Object({
+        material = {
             vertexShader = face_vert,
             fragmentShader = advection_frag,
             uniforms = {
                 boundarySpace = {
-                    value = simProps.cellScale
+                    value = simulationProperties.cellScale
                 },
                 px = {
-                    value = simProps.cellScale
+                    value = simulationProperties.cellScale
                 },
                 fboSize = {
-                    value = simProps.fboSize
+                    value = simulationProperties.fboSize
                 },
                 velocity = {
-                    value = simProps.src.texture
+                    value = simulationProperties.src.texture
                 },
                 dt = {
-                    value = simProps.dt
+                    value = simulationProperties.dt
                 },
                 isBFECC = {
                     value = true
                 }
             },
         },
-        output = simProps.dst
-    })
+        output = simulationProperties.dst
+    }))
 
     self.init()
 
     local boundaryG = new(THREE.BufferGeometry)
-    local vertices_boundary = new(js.global.Float32Array, {
+    local vertices_boundary = new(js.global.Float32Array, Object({
         -1, -1, 0,
         -1, 1, 0,
         -1, 1, 0,
@@ -49,17 +50,17 @@ return function(simProps)
         1, -1, 0,
         1, -1, 0,
         -1, -1, 0
-    })
+    }))
 
-    boundaryG.setAttribute( 'position', new(THREE.BufferAttribute, vertices_boundary, 3 ) )
+    boundaryG.setAttribute('position', new(THREE.BufferAttribute, vertices_boundary, 3))
 
-    local boundaryM = new THREE.RawShaderMaterial({
+    local boundaryM = new(THREE.RawShaderMaterial, Object({
         vertexShader = line_vert,
         fragmentShader = advection_frag,
         uniforms = self.uniforms
-    })
+    }))
 
-    self.line = new THREE.LineSegments(boundaryG, boundaryM)
+    self.line = new(THREE.LineSegments, boundaryG, boundaryM)
     self.scene.add(self.line)
 
     self.update = function(dt, isBounce, BFECC)
@@ -70,4 +71,6 @@ return function(simProps)
 
         self._update()
     end
+
+    return self
 end

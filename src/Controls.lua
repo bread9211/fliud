@@ -1,10 +1,9 @@
 local dat = js.global.dat
 local new = require("utils.new")
 
-return function (params)
+return function (parameters)
     local self = {}
-    self.params = params
-    self.init()
+    self.params = parameters
 
     self.init = function()
         self.gui = new(dat.GUI, {width = 300})
@@ -18,4 +17,8 @@ return function (params)
         self.gui.add(self.params, 'BFECC')
         self.gui.close()
     end
+
+    self.init()
+
+    return self
 end

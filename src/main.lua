@@ -1,15 +1,14 @@
 local window = js.global
 
+local EventBus = require("utils.EventBus")
+window.EventBus = EventBus
 local WebGL = require("src.WebGL")
 
-local o = WebGL:new({wrapper = window.document.body})
+local Object = require("utils.convertToJSObject")
+local new = require("utils.new")
 
-window.EventBus = require("utils.EventBus")
+if not (window.isDev) then window.isDev = false end
 
-o:loop()
-o:resize()
-window:addEventListener("resize", function ()
-    o:resize()
-end)
-
-print("main.lua initialized")
+local webGL = new(WebGL, Object{
+    wrapper = window.document.body
+})

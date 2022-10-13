@@ -1,30 +1,32 @@
-local face_vert = "./glsl/sim/face.vert"
-local divergence_frag = "./glsl/sim/divergence.frag"
+local get = require("utils.shaders")
+local face_vert = get("face.vert")
+local divergence_frag = get("divergence.frag")
 
 local ShaderPass = require("src.ShaderPass")
+local Object = require("utils.convertToJSObject")
 
-return function(simProps)
-    local self = ShaderPass({
+return function(simulationProperties)
+    local self = ShaderPass(Object({
         material = {
             vertexShader = face_vert,
             fragmentShader = divergence_frag,
             uniforms = {
                 boundarySpace = {
-                    value = simProps.boundarySpace
+                    value = simulationProperties.boundarySpace
                 },
                 velocity = {
-                    value = simProps.src.texture
+                    value = simulationProperties.src.texture
                 },
                 px = {
-                    value = simProps.cellScale
+                    value = simulationProperties.cellScale
                 },
                 dt = {
-                    value = simProps.dt
+                    value = simulationProperties.dt
                 }
             }
         },
-        output = simProps.dst
-    })
+        output = simulationProperties.dst
+    }))
 
     self.init()
 
@@ -32,4 +34,6 @@ return function(simProps)
         self.uniforms.velocity.value = vel.texture
         self._update()
     end
+
+    return self
 end

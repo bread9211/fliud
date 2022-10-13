@@ -3,6 +3,7 @@ local document = js.global.document
 local THREE = window.THREE
 
 local new = require("utils.new")
+local Object = require("utils.convertToJSObject")
 
 return (function ()
     local self = {}
@@ -16,7 +17,7 @@ return (function ()
     self.fboWidth = nil
     self.fboHeight = nil
 
-    self.resizeFunc = self.resize.bind(self)
+    self.resizeFunc = self.resize
 
     self.time = 0
     self.delta = 0
@@ -26,16 +27,16 @@ return (function ()
 
         self.resize()
 
-        self.renderer = new(THREE.WebGLRenderer, {
+        self.renderer = new(THREE.WebGLRenderer, Object({
             antialias = true,
             alpha = true,
-        })
+        }))
 
         self.renderer.autoClear = false
 
-        self.renderer.setSize( self.width, self.height )
+        self.renderer.setSize(self.width, self.height)
 
-        self.renderer.setClearColor( 0x000000 )
+        self.renderer.setClearColor(0x000000)
 
         self.renderer.setPixelRatio(self.pixelRatio)
 

@@ -3,72 +3,55 @@ local document = window.document
 local THREE = window.THREE
 
 local Common = require("src.Common")
+local new = require("utils.new")
 
-local Vector2 = THREE.Vector2
-
-local Mouse = {}
-local MouseMT = {__index = Mouse}
-
-function Mouse:new()
+return function()
     local self = {}
 
     self.mouseMoved = false
-    self.coords = js.new(Vector2)
-    self.coords_old = js.new(Vector2)
-    self.diff = js.new(Vector2)
+    self.coords = new(THREE.Vector2)
+    self.coords_old = new(THREE.Vector2)
+    self.diff = new(THREE.Vector2)
     self.timer = nil
     self.count = 0
 
-    return setmetatable(self, MouseMT)
-end
-
-function Mouse:init()
-    document.body:addEventListener("mousemove", self:onDocumentMouseMove())
-    document.body:addEventListener("touchstart", self:onDocumentTouchStart())
-    document.body:addEventListener("touchmove", self:onDocumentTouchMove())
-end
-
-function Mouse:setCoords(x, y)
-    if (self.timer) then
-        window:clearTimeout(self.timer)
+    self.init = function()
+        document.body:addEventListener('mousemove', self.onDocumentMouseMove, false)
+        document.body:addEventListener('touchstart', self.onDocumentTouchStart, false)
+        document.body:addEventListener('touchmove', self.onDocumentTouchMove, false)
     end
-    Common:resize()
-    self.coords:set((x / Common.width) * 2 - 1, -(y / Common.height) * 2 + 1)
-    self.mouseMoved = true
-    self.timer = window:setTimeout(function ()
-        self.mouseMoved = false
-    end, 100)
-end
 
-function Mouse:onDocumentMouseMove()
-    return function (_, event)
-        self:setCoords(event.clientX, event.clientY)
+    self.setCoords = function(x, y)
+        if (self.timer) then window:clearTimeout(self.timer) end
+        self.coords:set( (x/Common.width) * 2 - 1, -(y/Common.height) * 2 + 1)
+        self.mouseMoved = true
+        self.timer = window:setTimeout(function()
+            self.mouseMoved = false
+        end, 100)
     end
-end
 
-function Mouse:onDocumentTouchStart()
-    return function (_, event)
+    self.onDocumentMouseMove = function(_, event)
+        self.setCoords(event.clientX, event.clientY)
+    end
+
+    self.onDocumentTouchStart = function(_, event)
         if (event.touches.length == 1) then
-            self:setCoords(event.touches[0].pageX, event.touches[0].pageY)
+            self.setCoords(event.touches[0].pageX, event.touches[0].pageY)
         end
     end
-end
 
-function Mouse:onDocumentTouchMove()
-    return function (_, event)
+    self.onDocumentTouchMove = function(_, event)
         if (event.touches.length == 1) then
-            self:setCoords(event.touches[0].pageX, event.touches[0].pageY)
+            self.setCoords(event.touches[0].pageX, event.touches[0].pageY)
         end
     end
-end
 
-function Mouse:update()
-    self.diff:subVectors(self.coords, self.coords_old)
-    self.coords_old:copy(self.coords)
-    if (self.coords_old.x == 0 and self.coords_old.y == 0) then
-        self.diff:set(0, 0)
+    self.update = function()
+        self.diff:subVectors(self.coords, self.coords_old)
+        self.coords_old:copy(self.coords)
+
+        if (self.coords_old.x == 0 and self.coords_old.y == 0) then self.diff.set(0, 0) end
     end
-end
 
-print("Mouse.lua initialized")
-return Mouse:new()
+    return self
+end
