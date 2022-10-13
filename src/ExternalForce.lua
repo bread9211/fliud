@@ -59,5 +59,6 @@ return function(simulationProperties)
         self._update()
     end
 
+    print("ExternalForce.lua initialized")
     return self
 end

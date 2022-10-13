@@ -173,4 +173,7 @@ return function(properties)
 
         self.pressure.update({ vel , pressure})
     end
+
+    print("Simulation.lua initialized")
+    return self
 end

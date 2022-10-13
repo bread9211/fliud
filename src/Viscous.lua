@@ -62,4 +62,7 @@ return function(simulationProperties)
 
         return fbo_out
     end
+
+    print("Viscous.lua initialized")
+    return self
 end

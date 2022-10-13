@@ -20,5 +20,6 @@ return function (parameters)
 
     self.init()
 
+    print("Controls.lua initialized")
     return self
 end

@@ -10,7 +10,7 @@ return (function ()
 
     self.width = nil
     self.height = nil
-    self.aspect = self.width / self.height
+    self.aspect = nil
     self.isMobile = false
     self.breakpoint = 768
 
@@ -49,7 +49,7 @@ return (function ()
         self.height = window.innerHeight
         self.aspect = self.width / self.height
 
-        if (self.renderer) then self.renderer.setSize(self.width, self.height) end
+        if (self.renderer) then self.renderer:setSize(self.width, self.height) end
     end
 
     self.update = function()
@@ -57,5 +57,6 @@ return (function ()
         self.time = self.time + self.delta
     end
 
+    print("Common.lua initialized")
     return self
 end)()

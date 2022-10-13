@@ -35,5 +35,6 @@ return function(simulationProperties)
         self._update()
     end
 
+    print("Divergence.lua initialized")
     return self
 end

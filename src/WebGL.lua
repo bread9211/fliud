@@ -36,4 +36,7 @@ return function(properties)
         self.render()
         window:requestAnimationFrame(self.loop)
     end
+
+    print("WebGL.lua initialized")
+    return self
 end

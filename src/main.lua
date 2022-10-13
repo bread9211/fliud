@@ -12,3 +12,5 @@ if not (window.isDev) then window.isDev = false end
 local webGL = new(WebGL, Object{
     wrapper = window.document.body
 })
+
+print("main.lua initialized")

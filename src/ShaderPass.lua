@@ -32,5 +32,6 @@ return function (properties)
         end
     end
 
+    print("ShaderPass.lua initialized")
     return self
 end
