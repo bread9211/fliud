@@ -17,7 +17,7 @@ local Object = require("utils.convertToJSObject")
 local function round(n)
     return math.floor(n+0.5)
 end
-
+print("fdsafdsafdasf")
 return function(properties)
     local self = {}
     self.properties = properties

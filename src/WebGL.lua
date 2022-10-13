@@ -8,9 +8,11 @@ return function(properties)
     local self = {}
     self.properties = properties
 
+    print("hdsa")
     Common.init()
     Mouse.init()
 
+    print("hi")
     self.init()
     self.loop()
 

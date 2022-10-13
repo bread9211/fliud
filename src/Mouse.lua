@@ -5,8 +5,9 @@ local THREE = window.THREE
 local Common = require("src.Common")
 local new = require("utils.new")
 
-return function()
+return (function()
     local self = {}
+    print("fdsafdsa")
 
     self.mouseMoved = false
     self.coords = new(THREE.Vector2)
@@ -14,12 +15,14 @@ return function()
     self.diff = new(THREE.Vector2)
     self.timer = nil
     self.count = 0
+    print("fdsafdsa")
 
     self.init = function()
         document.body:addEventListener('mousemove', self.onDocumentMouseMove, false)
         document.body:addEventListener('touchstart', self.onDocumentTouchStart, false)
         document.body:addEventListener('touchmove', self.onDocumentTouchMove, false)
     end
+    print("fdsafdsa")
 
     self.setCoords = function(x, y)
         if (self.timer) then window:clearTimeout(self.timer) end
@@ -55,4 +58,4 @@ return function()
 
     print("Mouse.lua initialized")
     return self
-end
+end)()

@@ -2,6 +2,7 @@ local dat = js.global.dat
 local new = require("utils.new")
 
 return function (parameters)
+    print("among us")
     local self = {}
     self.params = parameters
 

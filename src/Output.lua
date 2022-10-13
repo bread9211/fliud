@@ -11,10 +11,10 @@ local color_frag = get("color.frag")
 return function()
     local self = {}
 
-    self.simulation = new(Simulation)
+    self.simulation = Simulation()
 
-    self.scene = new THREE.Scene()
-    self.camera = new THREE.Camera()
+    self.scene = new(THREE.Scene)
+    self.camera = new(THREE.Camera)
 
     self.output = new(THREE.Mesh,
         new(THREE.PlaneBufferGeometry2, 2),
@@ -43,8 +43,8 @@ return function()
     end
 
     self.render = function()
-        Common.renderer.setRenderTarget(nil)
-        Common.renderer.render(self.scene, self.camera)
+        Common.renderer:setRenderTarget(nil)
+        Common.renderer:render(self.scene, self.camera)
     end
 
     self.update = function()

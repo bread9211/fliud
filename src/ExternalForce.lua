@@ -1,4 +1,4 @@
-local get = require("utils.new")
+local get = require("utils.shaders")
 local mouse_vert = get("mouse.vert")
 local externalForce_frag = get("externalForce.frag")
 
@@ -8,11 +8,14 @@ local Object = require("utils.convertToJSObject")
 local Mouse = require("src.Mouse")
 
 local THREE = js.global.THREE
-
+print("fdsfdsfdsfds")
 return function(simulationProperties)
+    print(ShaderPass)
     local self = ShaderPass(Object({
         output = simulationProperties.dst
     }))
+    print(self)
+    print("afods")
 
     self.init()
     local mouseG = new(THREE.PlaneBufferGeometry, 1, 1)
