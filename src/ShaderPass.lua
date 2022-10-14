@@ -28,7 +28,6 @@ return function (properties)
         if (Common.renderer) then
             Common.renderer:setRenderTarget(self.properties.output)
             Common.renderer:render(self.scene, self.camera)
-            print("fda")
             Common.renderer:setRenderTarget(nil)
         end
     end

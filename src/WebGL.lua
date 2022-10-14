@@ -21,7 +21,6 @@ return function(properties)
         Mouse.update()
         Common.update()
         self.output.update()
-        print("fda")
     end
 
     self.loop = function()

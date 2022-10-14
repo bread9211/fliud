@@ -49,7 +49,6 @@ return function()
 
     self.update = function()
         self.simulation.update()
-        print("fda")
         self.render()
     end
 

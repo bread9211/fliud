@@ -44,17 +44,17 @@ return function(simulationProperties)
     self.update = function(viscous, iterations, dt)
         local fbo_in, fbo_out
         self.uniforms.v.value = viscous
-        for i = 0, #iterations, 1 do
+        for i = 0, iterations, 1 do
             if (i % 2 == 0) then
-                fbo_in = self.props.output0
-                fbo_out = self.props.output1
+                fbo_in = self.properties.output0
+                fbo_out = self.properties.output1
             else
-                fbo_in = self.props.output1
-                fbo_out = self.props.output0
+                fbo_in = self.properties.output1
+                fbo_out = self.properties.output0
             end
 
             self.uniforms.velocity_new.value = fbo_in.texture
-            self.props.output = fbo_out
+            self.properties.output = fbo_out
             self.uniforms.dt.value = dt
 
             self._update()
