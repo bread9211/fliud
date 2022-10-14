@@ -1,2 +1,6 @@
 {
+    "Lua.diagnostics.globals": [
+        "js"
+    ],
+    "Lua.completion.autoRequire": false
 }
