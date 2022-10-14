@@ -86,19 +86,19 @@ local shaders = {
     }]],
 
     ["color.frag"] = [[precision highp float;
-        uniform sampler2D velocity;
-        varying vec2 uv;
+    uniform sampler2D velocity;
+    varying vec2 uv;
+    
+    void main(){
+        vec2 vel = texture2D(velocity, uv).xy;
+        float len = length(vel);
+        vel = vel * 0.5 + 0.5;
         
-        void main(){
-            vec2 vel = texture2D(velocity, uv).xy;
-            float len = length(vel);
-            vel = vel * 0.5 + 0.5;
-            
-            vec3 color = vec3(vel.x, vel.y, 1.0);
-            color = mix(vec3(1.0), color, len);
-        
-            gl_FragColor = vec4(color,  1.0);
-        }]],
+        vec3 color = vec3(vel.x, vel.y, 1.0);
+        color = mix(vec3(1.0), color, len);
+    
+        gl_FragColor = vec4(color,  1.0);
+    }]],
 
     ["divergence.frag"] = [[precision highp float;
     uniform sampler2D velocity;
@@ -180,6 +180,7 @@ local shaders = {
     varying vec2 uv;
     
     void main(){
+        // poisson equation
         vec2 old = texture2D(velocity, uv).xy;
         vec2 new0 = texture2D(velocity_new, uv + vec2(px.x * 2.0, 0)).xy;
         vec2 new1 = texture2D(velocity_new, uv - vec2(px.x * 2.0, 0)).xy;

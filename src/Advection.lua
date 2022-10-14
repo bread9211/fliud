@@ -40,19 +40,37 @@ return function(simulationProperties)
 
     self.init()
 
-    local boundaryG = new(THREE.BufferGeometry)
-    local vertices_boundary = new(js.global.Float32Array, {
-        -1, -1, 0,
-        -1, 1, 0,
-        -1, 1, 0,
-        1, 1, 0,
-        1, 1, 0,
-        1, -1, 0,
-        1, -1, 0,
-        -1, -1, 0
-    })
+    local boundaryG = new(THREE.PlaneBufferGeometry)
+    local vertices_boundary = new(js.global.Float32Array)
+    vertices_boundary[0] = -1
+    vertices_boundary[1] = -1
+    vertices_boundary[2] = 0
+    vertices_boundary[3] = -1
+    vertices_boundary[4] = 1
+    vertices_boundary[5] = 0
 
-    boundaryG:setAttribute('position', new(THREE.BufferAttribute, vertices_boundary, 3))
+    vertices_boundary[6] = -1
+    vertices_boundary[7] = 1
+    vertices_boundary[8] = 0
+    vertices_boundary[9] = 1
+    vertices_boundary[10] = 1
+    vertices_boundary[11] = 0
+
+    vertices_boundary[12] = 1
+    vertices_boundary[13] = 1
+    vertices_boundary[14] = 0
+    vertices_boundary[15] = 1
+    vertices_boundary[16] = -1
+    vertices_boundary[17] = 0
+
+    vertices_boundary[18] = 1
+    vertices_boundary[19] = -1
+    vertices_boundary[20] = 0
+    vertices_boundary[21] = -1
+    vertices_boundary[22] = -1
+    vertices_boundary[23] = 0
+
+    boundaryG:setAttribute("position", new(THREE.BufferAttribute, vertices_boundary, 3))
 
     local boundaryM = new(THREE.RawShaderMaterial, Object({
         vertexShader = line_vert,
