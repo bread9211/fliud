@@ -8,7 +8,7 @@ return function(properties)
     local self = {}
 
     self.init = function()
-        -- self.properties.wrapper:prepend(Common.renderer.domElement)
+        self.properties.wrapper:prepend(Common.renderer.domElement)
         self.output = Output()
     end
 
