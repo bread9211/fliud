@@ -30,7 +30,7 @@ return (function ()
         self.renderer = new(THREE.WebGLRenderer, Object({
             antialias = true,
             alpha = true,
-            canvas = window.document:querySelector("canvas")
+            canvas = window.document.body:querySelector("canvas")
         }))
 
         self.renderer.autoClear = false
