@@ -7,7 +7,7 @@ return function (properties)
     local self = {}
 
     self.properties = properties
-    self.uniforms = nil
+    self.uniforms = false
     if (self.properties.material) then
         self.uniforms = self.properties.material.uniforms
     end
@@ -18,17 +18,18 @@ return function (properties)
 
         if (self.uniforms) then
             self.material = new(THREE.RawShaderMaterial, Object(self.properties.material))
-            self.geometry = new(THREE.PlaneBufferGeometry, 2.0, 2.0)
+            self.geometry = new(THREE.PlaneGeometry, 2.0, 2.0)
             self.plane = new(THREE.Mesh, self.geometry, self.material)
-            self.scene.add(self.plane)
+            self.scene:add(self.plane)
         end
     end
 
     self._update = function()
         if (Common.renderer) then
-            Common.renderer.setRenderTarget(self.properties.output)
-            Common.renderer.render(self.scene, self.camera)
-            Common.renderer.setRenderTarget(nil)
+            Common.renderer:setRenderTarget(self.properties.output)
+            Common.renderer:render(self.scene, self.camera)
+            print("fda")
+            Common.renderer:setRenderTarget(nil)
         end
     end
 

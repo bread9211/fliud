@@ -8,17 +8,14 @@ local Object = require("utils.convertToJSObject")
 local Mouse = require("src.Mouse")
 
 local THREE = js.global.THREE
-print("fdsfdsfdsfds")
+
 return function(simulationProperties)
-    print(ShaderPass)
     local self = ShaderPass(Object({
         output = simulationProperties.dst
     }))
-    print(self)
-    print("afods")
 
     self.init()
-    local mouseG = new(THREE.PlaneBufferGeometry, 1, 1)
+    local mouseG = new(THREE.PlaneGeometry, 1, 1)
 
     local mouseM = new(THREE.RawShaderMaterial, Object({
         vertexShader = mouse_vert,
@@ -41,7 +38,7 @@ return function(simulationProperties)
     }))
 
     self.mouse = new(THREE.Mesh, mouseG, mouseM)
-    self.scene.add(self.mouse)
+    self.scene:add(self.mouse)
 
     self.update = function(properties)
         local forceX = Mouse.diff.x / 2 * properties.mouse_force
@@ -55,9 +52,9 @@ return function(simulationProperties)
 
         local uniforms = self.mouse.material.uniforms
 
-        uniforms.force.value.set(forceX, forceY)
-        uniforms.center.value.set(centerX, centerY)
-        uniforms.scale.value.set(properties.cursor_size, properties.cursor_size)
+        uniforms.force.value:set(forceX, forceY)
+        uniforms.center.value:set(centerX, centerY)
+        uniforms.scale.value:set(properties.cursor_size, properties.cursor_size)
 
         self._update()
     end

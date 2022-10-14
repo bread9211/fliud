@@ -2,9 +2,10 @@ local get = require("utils.shaders")
 local face_vert = get("face.vert")
 local pressure_frag = get("pressure.frag")
 local ShaderPass = require("src.ShaderPass")
+local Object = require("utils.convertToJSObject")
 
 return function(simulationProperties)
-    local self = ShaderPass({
+    local self = ShaderPass(Object({
         material = {
             vertexShader = face_vert,
             fragmentShader = pressure_frag,
@@ -27,7 +28,8 @@ return function(simulationProperties)
             }
         },
         output = simulationProperties.dst
-    })
+    }))
+    print(self.uniforms.velocity.value)
 
     self.init()
 

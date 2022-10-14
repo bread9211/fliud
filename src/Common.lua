@@ -34,14 +34,14 @@ return (function ()
 
         self.renderer.autoClear = false
 
-        self.renderer.setSize(self.width, self.height)
+        self.renderer:setSize(self.width, self.height)
 
-        self.renderer.setClearColor(0x000000)
+        self.renderer:setClearColor(0x000000)
 
-        self.renderer.setPixelRatio(self.pixelRatio)
+        self.renderer:setPixelRatio(self.pixelRatio)
 
         self.clock = new(THREE.Clock)
-        self.clock.start()
+        self.clock:start()
     end
 
     self.resize = function()
@@ -53,7 +53,7 @@ return (function ()
     end
 
     self.update = function()
-        self.delta = self.clock.getDelta()
+        self.delta = self.clock:getDelta()
         self.time = self.time + self.delta
     end
 

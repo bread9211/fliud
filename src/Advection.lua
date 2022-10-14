@@ -41,7 +41,7 @@ return function(simulationProperties)
     self.init()
 
     local boundaryG = new(THREE.BufferGeometry)
-    local vertices_boundary = new(js.global.Float32Array, Object({
+    local vertices_boundary = new(js.global.Float32Array, {
         -1, -1, 0,
         -1, 1, 0,
         -1, 1, 0,
@@ -50,9 +50,9 @@ return function(simulationProperties)
         1, -1, 0,
         1, -1, 0,
         -1, -1, 0
-    }))
+    })
 
-    boundaryG.setAttribute('position', new(THREE.BufferAttribute, vertices_boundary, 3))
+    boundaryG:setAttribute('position', new(THREE.BufferAttribute, vertices_boundary, 3))
 
     local boundaryM = new(THREE.RawShaderMaterial, Object({
         vertexShader = line_vert,
@@ -61,10 +61,9 @@ return function(simulationProperties)
     }))
 
     self.line = new(THREE.LineSegments, boundaryG, boundaryM)
-    self.scene.add(self.line)
+    self.scene:add(self.line)
 
     self.update = function(dt, isBounce, BFECC)
-
         self.uniforms.dt.value = dt
         self.line.visible = isBounce
         self.uniforms.isBFECC.value = BFECC

@@ -6,20 +6,9 @@ local window = js.global
 
 return function(properties)
     local self = {}
-    self.properties = properties
-
-    print("hdsa")
-    Common.init()
-    Mouse.init()
-
-    print("hi")
-    self.init()
-    self.loop()
-
-    window:addEventListener("resize", self.resize)
 
     self.init = function()
-        self.properties.wrapper.prepend(Common.renderer.domElement)
+        self.properties.wrapper:prepend(Common.renderer.domElement)
         self.output = Output()
     end
 
@@ -32,12 +21,23 @@ return function(properties)
         Mouse.update()
         Common.update()
         self.output.update()
+        print("fda")
     end
 
     self.loop = function()
         self.render()
         window:requestAnimationFrame(self.loop)
     end
+
+    self.properties = properties
+
+    Common.init()
+    Mouse.init()
+
+    self.init()
+    self.loop()
+
+    window:addEventListener("resize", self.resize)
 
     print("WebGL.lua initialized")
     return self

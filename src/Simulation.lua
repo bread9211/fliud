@@ -17,22 +17,22 @@ local Object = require("utils.convertToJSObject")
 local function round(n)
     return math.floor(n+0.5)
 end
-print("fdsafdsafdasf")
+
 return function(properties)
     local self = {}
     self.properties = properties
 
     self.fbos = {
-        vel_0 = nil,
-        vel_1 = nil,
-        vel_viscous0 = nil,
-        vel_viscous1 = nil,
-        div = nil,
-        pressure_0 = nil,
-        pressure_1 = nil,
+        vel_0 = false,
+        vel_1 = false,
+        vel_viscous0 = false,
+        vel_viscous1 = false,
+        div = false,
+        pressure_0 = false,
+        pressure_1 = false,
     }
 
-    self.options = {
+    self.options = Object({
         iterations_poisson = 32,
         iterations_viscous = 32,
         mouse_force = 20,
@@ -43,22 +43,18 @@ return function(properties)
         dt = 0.014,
         isViscous = false,
         BFECC = true
-    }
+    })
 
-    local controls = Controls(self.options)
+    Controls(self.options)
 
     self.fboSize = new(THREE.Vector2)
     self.cellScale = new(THREE.Vector2)
     self.boundarySpace = new(THREE.Vector2)
 
-    self.calcSize()
-    self.createAllFBO()
-    self.createShaderPass()
-
     self.createAllFBO = function()
         local type = THREE.HalfFloatType
 
-        for k, i in ipairs(self.fbos) do
+        for k, _ in pairs(self.fbos) do
             self.fbos[k] = new(THREE.WebGLRenderTarget,
                 self.fboSize.x,
                 self.fboSize.y,
@@ -127,24 +123,27 @@ return function(properties)
         local px_x = 1.0 / width
         local px_y = 1.0 / height
 
-        self.cellScale.set(px_x, px_y)
-        self.fboSize.set(width, height)
+        self.cellScale:set(px_x, px_y)
+        self.fboSize:set(width, height)
     end
 
     self.resize = function()
         self.calcSize()
 
-        for k, v in self.fbos do
+        for k, v in pairs(self.fbos) do
             self.fbos[k]:setSize(self.fboSize.x, self.fboSize.y)
         end
     end
 
+    self.calcSize()
+    self.createAllFBO()
+    self.createShaderPass()
 
     self.update = function()
         if (self.options.isBounce) then
-            self.boundarySpace.set(0, 0)
+            self.boundarySpace:set(0, 0)
         else
-            self.boundarySpace.copy(self.cellScale)
+            self.boundarySpace:copy(self.cellScale)
         end
 
         self.advection.update(self.options)
@@ -158,20 +157,20 @@ return function(properties)
         local vel = self.fbos.vel_1
 
         if (self.options.isViscous) then
-            vel = self.viscous.update({
-                viscous = self.options.viscous,
-                iterations = self.options.iterations_viscous,
-                dt = self.options.dt
-            })
+            vel = self.viscous.update(
+                self.options.viscous,
+                self.options.iterations_viscous,
+                self.options.dt
+            )
         end
 
-        self.divergence.update({vel})
+        self.divergence.update(vel)
 
         local pressure = self.poisson.update({
-            iterations = self.options.iterations_poisson,
+            self.options.iterations_poisson
         })
 
-        self.pressure.update({ vel , pressure})
+        self.pressure.update(vel, pressure)
     end
 
     print("Simulation.lua initialized")

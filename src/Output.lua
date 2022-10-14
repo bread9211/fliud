@@ -17,7 +17,7 @@ return function()
     self.camera = new(THREE.Camera)
 
     self.output = new(THREE.Mesh,
-        new(THREE.PlaneBufferGeometry2, 2),
+        new(THREE.PlaneBufferGeometry, 2, 2),
         new(THREE.RawShaderMaterial, Object({
             vertexShader = face_vert,
             fragmentShader = color_frag,
@@ -32,10 +32,10 @@ return function()
         }))
     )
 
-    self.scene.add(self.output)
+    self.scene:add(self.output)
 
     self.addScene = function(mesh)
-        self.scene.add(mesh)
+        self.scene:add(mesh)
     end
 
     self.resize = function()
@@ -49,6 +49,7 @@ return function()
 
     self.update = function()
         self.simulation.update()
+        print("fda")
         self.render()
     end
 
