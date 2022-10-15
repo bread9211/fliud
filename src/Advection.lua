@@ -9,6 +9,16 @@ local Object = require("utils.convertToJSObject")
 
 local THREE = js.global.THREE
 
+local function Float32Array(array)
+    local a = new(js.global.Float32Array)
+
+    for i, v in ipairs(array) do
+        a[i-1] = v
+    end
+
+    return a
+end
+
 return function(simulationProperties)
     local self = ShaderPass(Object({
         material = {
@@ -41,34 +51,23 @@ return function(simulationProperties)
     self.init()
 
     local boundaryG = new(THREE.BufferGeometry)
-    local vertices_boundary = new(js.global.Float32Array)
-    vertices_boundary[0] = -1
-    vertices_boundary[1] = -1
-    vertices_boundary[2] = 0
-    vertices_boundary[3] = -1
-    vertices_boundary[4] = 1
-    vertices_boundary[5] = 0
+    local vertices_boundary = Float32Array({
+        -- left
+        -1, -1, 0,
+        -1, 1, 0,
 
-    vertices_boundary[6] = -1
-    vertices_boundary[7] = 1
-    vertices_boundary[8] = 0
-    vertices_boundary[9] = 1
-    vertices_boundary[10] = 1
-    vertices_boundary[11] = 0
+        -- top
+        -1, 1, 0,
+        1, 1, 0,
 
-    vertices_boundary[12] = 1
-    vertices_boundary[13] = 1
-    vertices_boundary[14] = 0
-    vertices_boundary[15] = 1
-    vertices_boundary[16] = -1
-    vertices_boundary[17] = 0
+        -- right
+        1, 1, 0,
+        1, -1, 0,
 
-    vertices_boundary[18] = 1
-    vertices_boundary[19] = -1
-    vertices_boundary[20] = 0
-    vertices_boundary[21] = -1
-    vertices_boundary[22] = -1
-    vertices_boundary[23] = 0
+        -- bottom
+        1, -1, 0,
+        -1, -1, 0
+    })
 
     boundaryG:setAttribute("position", new(THREE.BufferAttribute, vertices_boundary, 3))
 

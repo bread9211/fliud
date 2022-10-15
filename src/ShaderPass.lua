@@ -25,11 +25,9 @@ return function (properties)
     end
 
     self._update = function()
-        if (Common.renderer) then
-            Common.renderer:setRenderTarget(self.properties.output)
-            Common.renderer:render(self.scene, self.camera)
-            Common.renderer:setRenderTarget(nil)
-        end
+        Common.renderer:setRenderTarget(self.properties.output)
+        Common.renderer:render(self.scene, self.camera)
+        Common.renderer:setRenderTarget(js.global.null)
     end
 
     print("ShaderPass.lua initialized")
