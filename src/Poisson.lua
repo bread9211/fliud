@@ -36,7 +36,7 @@ return function(simulationProperties)
     self.update = function(iterations)
         local p_in, p_out
 
-        for i = 0, #iterations, 1 do
+        for i = 0, iterations[1], 1 do
             if(i % 2 == 0) then
                 p_in = self.properties.output0
                 p_out = self.properties.output1

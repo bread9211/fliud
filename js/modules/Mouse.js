@@ -1,5 +1,5 @@
-import * as THREE from "three";
-import Common from "./Common";
+// import * as THREE from "three";
+import Common from "./Common.js";
 
 class Mouse{
     constructor(){

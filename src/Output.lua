@@ -17,7 +17,7 @@ return function()
     self.camera = new(THREE.Camera)
 
     self.output = new(THREE.Mesh,
-        new(THREE.PlaneBufferGeometry, 2, 2),
+        new(THREE.PlaneGeometry, 2, 2),
         new(THREE.RawShaderMaterial, Object({
             vertexShader = face_vert,
             fragmentShader = color_frag,

@@ -15,7 +15,7 @@ return function(simulationProperties)
     }))
 
     self.init()
-    local mouseG = new(THREE.PlaneGeometry, 1, 1)
+    local mouseG = new(THREE.PlaneBufferGeometry, 1, 1)
 
     local mouseM = new(THREE.RawShaderMaterial, Object({
         vertexShader = mouse_vert,
@@ -41,8 +41,9 @@ return function(simulationProperties)
     self.scene:add(self.mouse)
 
     self.update = function(properties)
-        local forceX = Mouse.diff.x / 2 * properties.mouse_force
-        local forceY = Mouse.diff.y / 2 * properties.mouse_force
+        local forceX = ((Mouse.diff.x / 2) * properties.mouse_force)
+        local forceY = ((Mouse.diff.y / 2) * properties.mouse_force)
+        -- print(forceX, forceY)
 
         local cursorSizeX = properties.cursor_size * properties.cellScale.x
         local cursorSizeY = properties.cursor_size * properties.cellScale.y

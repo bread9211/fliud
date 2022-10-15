@@ -2,9 +2,9 @@ import face_vert from "./glsl/sim/face.vert";
 import line_vert from "./glsl/sim/line.vert";
 
 import advection_frag from "./glsl/sim/advection.frag";
-import ShaderPass from "./ShaderPass";
+import ShaderPass from "./ShaderPass.js";
 
-import * as THREE from "three";
+// import * as THREE from "three";
 
 
 export default class Advection extends ShaderPass{

@@ -40,7 +40,7 @@ return function(simulationProperties)
 
     self.init()
 
-    local boundaryG = new(THREE.PlaneBufferGeometry)
+    local boundaryG = new(THREE.BufferGeometry)
     local vertices_boundary = new(js.global.Float32Array)
     vertices_boundary[0] = -1
     vertices_boundary[1] = -1

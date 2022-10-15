@@ -1,7 +1,7 @@
-import Common from "./Common";
-import * as THREE from "three";
+import Common from "./Common.js";
+// import * as THREE from "three";
 
-import Simulation from "./Simulation";
+import Simulation from "./Simulation.js";
 import face_vert from "./glsl/sim/face.vert";
 import color_frag from "./glsl/sim/color.frag";
 

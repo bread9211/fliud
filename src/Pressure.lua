@@ -29,7 +29,6 @@ return function(simulationProperties)
         },
         output = simulationProperties.dst
     }))
-    print(self.uniforms.velocity.value)
 
     self.init()
 

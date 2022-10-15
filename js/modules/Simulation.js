@@ -1,14 +1,14 @@
-import Mouse from "./Mouse";
-import Common from "./Common";
-import * as THREE from "three";
-import Controls from "./Controls";
+import Mouse from "./Mouse.js";
+import Common from "./Common.js";
+// import * as THREE from "three";
+import Controls from "./Controls.js";
 
-import Advection from "./Advection";
-import ExternalForce from "./ExternalForce";
-import Viscous from "./Viscous";
-import Divergence from "./Divergence";
-import Poisson from "./Poisson";
-import Pressure from "./Pressure";
+import Advection from "./Advection.js";
+import ExternalForce from "./ExternalForce.js";
+import Viscous from "./Viscous.js";
+import Divergence from "./Divergence.js";
+import Poisson from "./Poisson.js";
+import Pressure from "./Pressure.js";
 
 export default class Simulation{
     constructor(props){

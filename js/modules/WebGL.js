@@ -1,7 +1,7 @@
 // import * as THREE from "three";
-import Common from "./Common";
-import Output from "./Output";
-import Mouse from "./Mouse";
+import Common from "./Common.js";
+import Output from "./Output.js";
+import Mouse from "./Mouse.js";
 
 export default class Webgl{
     constructor(props){

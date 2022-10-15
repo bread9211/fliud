@@ -52,7 +52,7 @@ return function(properties)
     self.boundarySpace = new(THREE.Vector2)
 
     self.createAllFBO = function()
-        local type = THREE.HalfFloatType
+        local type = THREE.FloatType
 
         for k, _ in pairs(self.fbos) do
             self.fbos[k] = new(THREE.WebGLRenderTarget,

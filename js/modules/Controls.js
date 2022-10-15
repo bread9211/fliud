@@ -1,4 +1,4 @@
-import * as dat from "dat.gui";
+// import * as dat from "dat.gui";
 
 export default class Controls{
     constructor(params){

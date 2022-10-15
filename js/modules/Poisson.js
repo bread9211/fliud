@@ -1,7 +1,7 @@
 import face_vert from "./glsl/sim/face.vert";
 import poisson_frag from "./glsl/sim/poisson.frag";
 
-import ShaderPass from "./ShaderPass";
+import ShaderPass from "./ShaderPass.js";
 
 export default class Divergence extends ShaderPass{
     constructor(simProps){
