@@ -20,7 +20,7 @@ local function Float32Array(array)
 end
 
 return function(simulationProperties)
-    local self = ShaderPass(Object({
+    local self = ShaderPass({
         material = {
             vertexShader = face_vert,
             fragmentShader = advection_frag,
@@ -46,7 +46,7 @@ return function(simulationProperties)
             },
         },
         output = simulationProperties.dst
-    }))
+    })
 
     self.init()
 

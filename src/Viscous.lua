@@ -7,7 +7,7 @@ local Object = require("utils.convertToJSObject")
 local THREE = js.global.THREE
 
 return function(simulationProperties)
-    local self = ShaderPass(Object{
+    local self = ShaderPass({
         material = {
             vertexShader = face_vert,
             fragmentShader = viscous_frag,

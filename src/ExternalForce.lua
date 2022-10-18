@@ -10,9 +10,9 @@ local Mouse = require("src.Mouse")
 local THREE = js.global.THREE
 
 return function(simulationProperties)
-    local self = ShaderPass(Object({
+    local self = ShaderPass({
         output = simulationProperties.dst
-    }))
+    })
 
     self.init()
     local mouseG = new(THREE.PlaneBufferGeometry, 1, 1)
