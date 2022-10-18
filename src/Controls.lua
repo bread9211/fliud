@@ -15,6 +15,7 @@ return function (parameters)
         self.gui:add(self.params, "iterations_poisson", 1, 32)
         self.gui:add(self.params, "dt", 1/200, 1/30)
         self.gui:add(self.params, 'BFECC')
+        self.gui:add(self.params, 'isBounce')
         self.gui:close()
     end
 
