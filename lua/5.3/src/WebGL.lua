@@ -18,9 +18,11 @@ return function(properties)
     end
 
     self.render = function()
+        self.output.simulation.controls.stats:begin()
         Mouse.update()
         Common.update()
         self.output.update()
+        self.output.simulation.controls.stats:_end()
     end
 
     self.loop = function()

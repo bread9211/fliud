@@ -1,4 +1,5 @@
 local dat = js.global.dat
+local stats = js.global.Stats
 local new = require("utils.new")
 
 return function (parameters)
@@ -16,7 +17,12 @@ return function (parameters)
         self.gui:add(self.params, "dt", 1/200, 1/30)
         self.gui:add(self.params, 'BFECC')
         self.gui:add(self.params, 'isBounce')
+        self.gui:add(self.params, "hue", 0.0, 1.0)
         self.gui:close()
+
+        self.stats = new(stats)
+        self.stats:showPanel(0)
+        js.global.document.body:appendChild(self.stats.dom)
     end
 
     self.init()

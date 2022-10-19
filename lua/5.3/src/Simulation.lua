@@ -42,10 +42,11 @@ return function(properties)
         isBounce = false,
         dt = 0.014,
         isViscous = false,
-        BFECC = true
+        BFECC = true,
+        hue = 1.0,
     })
 
-    Controls(self.options)
+    self.controls = Controls(self.options)
 
     self.fboSize = new(THREE.Vector2)
     self.cellScale = new(THREE.Vector2)

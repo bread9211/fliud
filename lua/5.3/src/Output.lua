@@ -15,7 +15,6 @@ return function()
 
     self.scene = new(THREE.Scene)
     self.camera = new(THREE.Camera)
-
     self.output = new(THREE.Mesh,
         new(THREE.PlaneGeometry, 2, 2),
         new(THREE.RawShaderMaterial, Object({
@@ -27,6 +26,9 @@ return function()
                 },
                 boundarySpace = {
                     value = new(THREE.Vector2)
+                },
+                hue = {
+                    value = self.simulation.options.hue
                 }
             }
         }))
@@ -43,6 +45,8 @@ return function()
     end
 
     self.render = function()
+        self.output.material.uniforms.hue.value = self.simulation.options.hue
+
         Common.renderer:setRenderTarget(nil)
         Common.renderer:render(self.scene, self.camera)
     end
