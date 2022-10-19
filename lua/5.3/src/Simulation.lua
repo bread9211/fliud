@@ -55,6 +55,12 @@ return function(properties)
     self.createAllFBO = function()
         local type = THREE.FloatType
 
+        if (string.match(window.navigator.userAgent, "iPad") or
+            string.match(window.navigator.userAgent, "iPhone") or
+            string.match(window.navigator.userAgent, "iPod")) then
+            type = THREE.HalfFloatType
+        end
+
         for k, _ in pairs(self.fbos) do
             self.fbos[k] = new(THREE.WebGLRenderTarget,
                 self.fboSize.x,
