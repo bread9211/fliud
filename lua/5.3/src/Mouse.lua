@@ -53,6 +53,5 @@ return (function()
         if (self.coords_old.x == 0 and self.coords_old.y == 0) then self.diff:set(0, 0) end
     end
 
-    print("Mouse.lua initialized")
     return self
 end)()

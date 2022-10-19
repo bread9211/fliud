@@ -9,5 +9,3 @@ if not (window.isDev) then window.isDev = false end
 local webGL = WebGL({
     wrapper = window.document.body
 })
-
-print("main.lua initialized")

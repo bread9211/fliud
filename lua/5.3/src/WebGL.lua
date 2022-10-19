@@ -37,7 +37,5 @@ return function(properties)
     self.loop()
 
     window:addEventListener("resize", self.resize)
-
-    print("WebGL.lua initialized")
     return self
 end
