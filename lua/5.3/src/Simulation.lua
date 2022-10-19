@@ -146,7 +146,7 @@ return function(properties)
             self.boundarySpace:copy(self.cellScale)
         end
 
-        self.advection.update(self.options)
+        self.advection.update(self.options.dt, self.options.isBounce, self.options.BFECC)
 
         self.externalForce.update({
             cursor_size = self.options.cursor_size,
@@ -166,9 +166,9 @@ return function(properties)
 
         self.divergence.update(vel)
 
-        local pressure = self.poisson.update({
+        local pressure = self.poisson.update(
             self.options.iterations_poisson
-        })
+        )
 
         self.pressure.update(vel, pressure)
     end
