@@ -15,7 +15,7 @@ return function(simulationProperties)
     })
 
     self.init()
-    local mouseG = new(THREE.PlaneBufferGeometry, 1, 1)
+    local mouseG = new(THREE.PlaneGeometry, 1, 1)
 
     local mouseM = new(THREE.RawShaderMaterial, Object({
         vertexShader = mouse_vert,
@@ -60,6 +60,5 @@ return function(simulationProperties)
         self._update()
     end
 
-    print("ExternalForce.lua initialized")
     return self
 end

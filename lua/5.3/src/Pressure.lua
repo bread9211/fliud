@@ -38,6 +38,5 @@ return function(simulationProperties)
         self._update()
     end
 
-    print("Pressure.lua initialized")
     return self
 end

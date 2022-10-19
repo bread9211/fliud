@@ -58,6 +58,5 @@ return (function ()
         self.time = self.time + self.delta
     end
 
-    print("Common.lua initialized")
     return self
 end)()

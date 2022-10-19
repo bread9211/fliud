@@ -53,6 +53,5 @@ return function(simulationProperties)
         return p_out
     end
 
-    print("Poisson.lua initialized")
     return self
 end

@@ -18,7 +18,7 @@ return function (properties)
 
         if (self.uniforms) then
             self.material = new(THREE.RawShaderMaterial, Object(self.properties.material))
-            self.geometry = new(THREE.PlaneBufferGeometry, 2.0, 2.0)
+            self.geometry = new(THREE.PlaneGeometry, 2.0, 2.0)
             self.plane = new(THREE.Mesh, self.geometry, self.material)
             self.scene:add(self.plane)
         end
@@ -30,6 +30,5 @@ return function (properties)
         Common.renderer:setRenderTarget(js.global.null)
     end
 
-    print("ShaderPass.lua initialized")
     return self
 end

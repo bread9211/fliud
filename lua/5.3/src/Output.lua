@@ -52,6 +52,5 @@ return function()
         self.render()
     end
 
-    print("Output.lua initialized")
     return self
 end

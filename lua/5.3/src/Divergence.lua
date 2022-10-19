@@ -34,7 +34,6 @@ return function(simulationProperties)
         self.uniforms.velocity.value = vel.texture
         self._update()
     end
-
-    print("Divergence.lua initialized")
+    
     return self
 end

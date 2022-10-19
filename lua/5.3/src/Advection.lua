@@ -88,6 +88,5 @@ return function(simulationProperties)
         self._update()
     end
 
-    print("Advection.lua initialized")
     return self
 end
