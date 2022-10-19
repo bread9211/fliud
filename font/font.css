@@ -8,3 +8,10 @@
     src: url(Comfortaa-Bold.ttf);
     font-weight: bold;
 }
+
+html, body {
+    overflow: hidden;
+}
+body {
+    position: relative;
+}
