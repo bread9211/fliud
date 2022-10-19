@@ -18,6 +18,8 @@ return function (parameters)
         self.gui:add(self.params, 'BFECC')
         self.gui:add(self.params, 'isBounce')
         self.gui:add(self.params, "hue", 0.0, 1.0)
+        self.gui:add(self.params, "brightness", 0.0, 1.0)
+        self.gui:add(self.params, "background", 0.0, 1.0)
         self.gui:close()
 
         self.stats = new(stats)

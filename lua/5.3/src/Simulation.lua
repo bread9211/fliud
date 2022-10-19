@@ -44,6 +44,8 @@ return function(properties)
         isViscous = false,
         BFECC = true,
         hue = 1.0,
+        brightness = 0.0,
+        background = 1.0,
     })
 
     self.controls = Controls(self.options)

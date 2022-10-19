@@ -29,6 +29,12 @@ return function()
                 },
                 hue = {
                     value = self.simulation.options.hue
+                },
+                brightness = {
+                    value = 1.0 - self.simulation.options.brightness
+                },
+                background = {
+                    value = self.simulation.options.background
                 }
             }
         }))
@@ -46,6 +52,8 @@ return function()
 
     self.render = function()
         self.output.material.uniforms.hue.value = self.simulation.options.hue
+        self.output.material.uniforms.brightness.value = 1.0 - self.simulation.options.brightness
+        self.output.material.uniforms.background.value = self.simulation.options.background
 
         Common.renderer:setRenderTarget(nil)
         Common.renderer:render(self.scene, self.camera)
