@@ -11,6 +11,7 @@ local Viscous = require("src.Viscous")
 local Divergence = require("src.Divergence")
 local Poisson = require("src.Poisson")
 local Pressure = require("src.Pressure")
+local Vector = require("src.Vector")
 local new = require("utils.new")
 local Object = require("utils.convertToJSObject")
 
@@ -46,6 +47,9 @@ return function(properties)
         hue = 1.0,
         brightness = 0.0,
         background = 1.0,
+
+        vector_size = 10,
+        vector_force = 20,
     })
 
     self.controls = Controls(self.options)
@@ -123,6 +127,13 @@ return function(properties)
             dst = self.fbos.vel_0,
             dt = self.options.dt,
         })
+
+        self.testVector = Vector({
+            cellScale = self.cellScale,
+            cursor_size = self.options.cursor_size,
+            dst = self.fbos.vel_1,
+            vector_force = self.options.vector_force
+        })
     end
 
     self.calcSize = function()
@@ -161,6 +172,12 @@ return function(properties)
             cursor_size = self.options.cursor_size,
             mouse_force = self.options.mouse_force,
             cellScale = self.cellScale
+        })
+
+        self.testVector.update({
+            cursor_size = self.options.vector_size,
+            cellScale = self.cellScale,
+            vector_force = self.options.vector_force
         })
 
         local vel = self.fbos.vel_1

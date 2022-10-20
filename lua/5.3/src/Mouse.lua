@@ -15,8 +15,15 @@ return (function()
     self.timer = nil
     self.count = 0
 
+    self.mouseDownX = 100
+    self.mouseDownY = 100
+    self.mouseUpX = 200
+    self.mouseUpY = 200
+
     self.init = function()
         document.body:addEventListener('mousemove', self.onDocumentMouseMove, false)
+        document.body:addEventListener('mousedown', self.onDocumentMouseDown, false)
+        document.body:addEventListener('mouseup', self.onDocumentMouseUp, false)
         document.body:addEventListener('touchstart', self.onDocumentTouchStart, false)
         document.body:addEventListener('touchmove', self.onDocumentTouchMove, false)
     end
@@ -32,6 +39,18 @@ return (function()
 
     self.onDocumentMouseMove = function(_, event)
         self.setCoords(event.clientX, event.clientY)
+    end
+
+    self.onDocumentMouseDown = function(_, event)
+        self.mouseDown = true
+        self.mouseDownX = event.clientX
+        self.mouseDownY = event.clientY
+    end
+
+    self.onDocumentMouseUp = function(_, event)
+        self.mouseDown = false
+        self.mouseUpX = event.clientX
+        self.mouseUpY = event.clientY
     end
 
     self.onDocumentTouchStart = function(_, event)
