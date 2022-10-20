@@ -1,7 +1,7 @@
 # Fluid Simulator in Lua
 
 basically title<br>
-uses <a href = "https://fengari.io/">fengari-web</a> to run lua in a js environment,  <a href = "https://threejs.org/">three.js</a> to render, and <a href = "https://github.com/dataarts/dat.gui">dat.gui</a> for gui
+uses <a href = "https://fengari.io/">fengari-web</a> to run lua in a js environment,  <a href = "https://threejs.org/">three.js</a> to render, <a href = "https://github.com/dataarts/dat.gui">dat.gui</a> for gui, and <a href = "https://github.com/mrdoob/stats.js/">stats.js</a> for fps monitor
 
 <br>
 
