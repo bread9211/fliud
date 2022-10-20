@@ -54,7 +54,6 @@ return function(simulationProperties)
         local centerY = math.min(math.max(self.sourceY, -1 + cursorSizeY + properties.cellScale.y * 2), 1 - cursorSizeY - properties.cellScale.y * 2)
 
         local uniforms = self.mouse.material.uniforms
-        -- print(properties.cellScale.x, properties.cellScale.y)
 
         uniforms.center.value:set(centerX, centerY)
 
