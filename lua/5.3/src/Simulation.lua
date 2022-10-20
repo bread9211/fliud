@@ -48,8 +48,8 @@ return function(properties)
         brightness = 0.0,
         background = 1.0,
 
-        vector_size = 10,
-        vector_force = 20,
+        vector_size = 5,
+        vector_force = 10,
     })
 
     self.controls = Controls(self.options)
@@ -57,6 +57,8 @@ return function(properties)
     self.fboSize = new(THREE.Vector2)
     self.cellScale = new(THREE.Vector2)
     self.boundarySpace = new(THREE.Vector2)
+
+    self.vectors = {}
 
     self.createAllFBO = function()
         local type = THREE.FloatType
@@ -128,12 +130,23 @@ return function(properties)
             dt = self.options.dt,
         })
 
-        self.testVector = Vector({
-            cellScale = self.cellScale,
-            cursor_size = self.options.cursor_size,
-            dst = self.fbos.vel_1,
-            vector_force = self.options.vector_force
-        })
+        Mouse.mouseUpBind = function()
+            table.insert(self.vectors, Vector({
+                cellScale = self.cellScale,
+                cursor_size = self.options.vector_size,
+                vector_force = self.options.vector_force,
+                dst = self.fbos.vel_1,
+            }))
+        end
+
+        -- Mouse.mouseBind = function()
+        --     table.insert(self.vectors, Vector({
+        --         cellScale = self.cellScale,
+        --         cursor_size = self.options.vector_size,
+        --         vector_force = self.options.vector_force,
+        --         dst = self.fbos.vel_1,
+        --     }))
+        -- end
     end
 
     self.calcSize = function()
@@ -174,11 +187,12 @@ return function(properties)
             cellScale = self.cellScale
         })
 
-        self.testVector.update({
-            cursor_size = self.options.vector_size,
-            cellScale = self.cellScale,
-            vector_force = self.options.vector_force
-        })
+        for _, v in ipairs(self.vectors) do
+            v.update({
+                mouse_force = self.options.vector_force,
+                cellScale = self.cellScale
+            })
+        end
 
         local vel = self.fbos.vel_1
 

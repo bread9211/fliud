@@ -22,8 +22,8 @@ return function (parameters)
         self.gui:add(self.params, "background", 0.0, 1.0)
 
         self.vector = self.gui:addFolder("New vector")
-        self.vector:add(self.params, "vector_force", 20, 200)
-        self.vector:add(self.params, "vector_size", 10, 200)
+        self.vector:add(self.params, "vector_force", 10, 50)
+        self.vector:add(self.params, "vector_size", 1, 50)
 
         self.gui:close()
 

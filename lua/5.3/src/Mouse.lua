@@ -20,6 +20,9 @@ return (function()
     self.mouseUpX = 200
     self.mouseUpY = 200
 
+    self.mouseDownBind = false
+    self.mouseUpBind = false
+
     self.init = function()
         document.body:addEventListener('mousemove', self.onDocumentMouseMove, false)
         document.body:addEventListener('mousedown', self.onDocumentMouseDown, false)
@@ -45,12 +48,16 @@ return (function()
         self.mouseDown = true
         self.mouseDownX = event.clientX
         self.mouseDownY = event.clientY
+
+        if (self.mouseDownBind) then self.mouseDownBind() end
     end
 
     self.onDocumentMouseUp = function(_, event)
         self.mouseDown = false
         self.mouseUpX = event.clientX
         self.mouseUpY = event.clientY
+
+        if (self.mouseUpBind) then self.mouseUpBind() end
     end
 
     self.onDocumentTouchStart = function(_, event)

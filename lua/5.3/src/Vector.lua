@@ -5,6 +5,7 @@ local externalForce_frag = get("externalForce.frag")
 local ShaderPass = require("src.ShaderPass")
 local new = require("utils.new")
 local Object = require("utils.convertToJSObject")
+local Common = require("src.Common")
 local Mouse = require("src.Mouse")
 
 local THREE = js.global.THREE
@@ -26,7 +27,7 @@ return function(simulationProperties)
                 value = simulationProperties.cellScale
             },
             force = {
-                value = new(THREE.Vector2, (Mouse.mouseDownX - Mouse.mouseUpX)*simulationProperties.vector_force/200, (Mouse.mouseDownY - Mouse.mouseUpY)*simulationProperties.vector_force/200)
+                value = new(THREE.Vector2, (Mouse.mouseUpX - Mouse.mouseDownX)*simulationProperties.vector_force/200, -(Mouse.mouseUpY - Mouse.mouseDownY)*simulationProperties.vector_force/200)
             },
             center = {
                 value = new(THREE.Vector2, Mouse.mouseDownX, Mouse.mouseDownY)
@@ -40,22 +41,22 @@ return function(simulationProperties)
     self.mouse = new(THREE.Mesh, mouseG, mouseM)
     self.scene:add(self.mouse)
 
+    self.sourceX = (Mouse.mouseDownX/Common.width) * 2 - 1
+    self.sourceY = -(Mouse.mouseDownY/Common.height) * 2 + 1
+
+    self.cursor_size = simulationProperties.cursor_size
+
     self.update = function(properties)
-        -- local forceX = ((Mouse.diff.x / 2) * properties.mouse_force)
-        -- local forceY = ((Mouse.diff.y / 2) * properties.mouse_force)
-        -- print(forceX, forceY)
+        local cursorSizeX = self.cursor_size * properties.cellScale.x
+        local cursorSizeY = self.cursor_size * properties.cellScale.y
 
-        local cursorSizeX = properties.cursor_size * properties.cellScale.x
-        local cursorSizeY = properties.cursor_size * properties.cellScale.y
-
-        local centerX = math.min(math.max(Mouse.mouseDownX, -1 + cursorSizeX + properties.cellScale.x * 2), 1 - cursorSizeX - properties.cellScale.x * 2)
-        local centerY = math.min(math.max(Mouse.mouseDownY, -1 + cursorSizeY + properties.cellScale.y * 2), 1 - cursorSizeY - properties.cellScale.y * 2)
+        local centerX = math.min(math.max(self.sourceX, -1 + cursorSizeX + properties.cellScale.x * 2), 1 - cursorSizeX - properties.cellScale.x * 2)
+        local centerY = math.min(math.max(self.sourceY, -1 + cursorSizeY + properties.cellScale.y * 2), 1 - cursorSizeY - properties.cellScale.y * 2)
 
         local uniforms = self.mouse.material.uniforms
+        -- print(properties.cellScale.x, properties.cellScale.y)
 
-        -- uniforms.force.value:set(forceX, forceY)
         uniforms.center.value:set(centerX, centerY)
-        uniforms.scale.value:set(properties.cursor_size, properties.cursor_size)
 
         self._update()
     end
